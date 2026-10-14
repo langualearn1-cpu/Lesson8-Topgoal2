@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome! Page 7 - Interactive Worksheet & Roleplay</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Fredoka & Tajawal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --font-en: 'Fredoka', cursive, sans-serif;
+      --font-ar: 'Tajawal', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-ar);
+      background-color: #f8fafc;
+      background-image: 
+        radial-gradient(#cbd5e1 1px, transparent 1px), 
+        radial-gradient(#e2e8f0 1px, #f8fafc 1px);
+      background-size: 24px 24px;
+      background-position: 0 0, 12px 12px;
+      min-height: 100vh;
+      color: #1e293b;
+    }
+
+    .font-english {
+      font-family: var(--font-en);
+    }
+
+    /* Sound wave equalizer */
+    .eq-wave-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      height: 14px;
+    }
+    .eq-bar {
+      width: 3px;
+      border-radius: 9999px;
+      animation: eqBounce 0.65s ease-in-out infinite;
+    }
+    .eq-bar:nth-child(1) { height: 4px; background-color: #0284c7; animation-delay: 0.1s; }
+    .eq-bar:nth-child(2) { height: 14px; background-color: #10b981; animation-delay: 0.3s; }
+    .eq-bar:nth-child(3) { height: 8px; background-color: #f59e0b; animation-delay: 0.2s; }
+
+    @keyframes eqBounce {
+      0%, 100% { height: 3px; }
+      50% { height: 14px; }
+    }
+
+    /* Audio Sync Glow */
+    .sync-active-glow {
+      box-shadow: 0 0 0 4px #0ea5e9, 0 10px 25px -3px rgba(14, 165, 233, 0.45) !important;
+      transform: scale(1.02) !important;
+      background-color: #f0f9ff !important;
+      transition: all 0.25s ease;
+    }
+
+    .sync-char-active {
+      filter: drop-shadow(0 0 14px #38bdf8) brightness(1.08);
+      transform: scale(1.04);
+      transition: all 0.25s ease;
+    }
+
+    /* Drag and Drop Elements */
+    .word-chip {
+      cursor: grab;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+    .word-chip:active {
+      cursor: grabbing;
+      transform: scale(0.96);
+    }
+    .word-chip-selected {
+      box-shadow: 0 0 0 3px #0284c7, 0 4px 12px rgba(2, 132, 199, 0.3);
+      background-color: #0284c7 !important;
+      color: white !important;
+      transform: scale(1.05);
+    }
+    .drop-slot {
+      transition: all 0.2s ease;
+      min-width: 90px;
+    }
+    .drop-slot.drag-over {
+      background-color: #e0f2fe !important;
+      border-color: #0284c7 !important;
+      transform: scale(1.05);
+    }
+
+    /* Speech bubbles */
+    .bubble-tail-left::after {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: 10px solid #ffffff;
+      filter: drop-shadow(-2px 0 1px rgba(0,0,0,0.06));
+    }
+
+    .bubble-tail-right::after {
+      content: '';
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 10px solid #ffffff;
+      filter: drop-shadow(2px 0 1px rgba(0,0,0,0.06));
+    }
+
+    /* Modern Comic Speech Bubble pointing down to character avatar */
+    .bubble-tail-bottom {
+      position: relative;
+    }
+    .bubble-tail-bottom::after {
+      content: '';
+      position: absolute;
+      bottom: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-top: 12px solid #ffffff;
+      filter: drop-shadow(0 3px 2px rgba(0,0,0,0.07));
+      z-index: 10;
+    }
+
+    .modern-bubble-laila {
+      background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.16), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+      border: 1.5px solid #a7f3d0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .modern-bubble-laila:hover {
+      box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.25);
+      border-color: #34d399;
+      transform: translateY(-2px);
+    }
+
+    .modern-bubble-sarah {
+      background: linear-gradient(180deg, #ffffff 0%, #faf5ff 100%);
+      box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.16), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+      border: 1.5px solid #e9d5ff;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .modern-bubble-sarah:hover {
+      box-shadow: 0 14px 30px -4px rgba(168, 85, 247, 0.25);
+      border-color: #c084fc;
+      transform: translateY(-2px);
+    }
+
+    @keyframes shakeCard {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+    .animate-shake {
+      animation: shakeCard 0.4s ease-in-out;
+    }
+
+    /* Live Karaoke & Text-Audio Synchronization */
+    .k-word {
+      display: inline-block;
+      padding: 1px 4px;
+      margin: 0 1.5px;
+      border-radius: 6px;
+      transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .k-word.k-active {
+      background: linear-gradient(135deg, #fef08a, #fde047) !important;
+      color: #0f172a !important;
+      font-weight: 900 !important;
+      transform: scale(1.18);
+      box-shadow: 0 0 14px rgba(234, 179, 8, 0.85), 0 2px 6px rgba(0,0,0,0.15) !important;
+      border: 1px solid #eab308;
+      z-index: 20;
+      position: relative;
+    }
+    .k-word.k-passed {
+      color: #0284c7;
+      transition: color 0.2s ease;
+    }
+
+    /* Interactive Audio Player Bar Styles */
+    .audio-player-card {
+      background: linear-gradient(135deg, #0f766e 0%, #0d9488 50%, #0284c7 100%);
+      box-shadow: 0 10px 25px -5px rgba(13, 148, 136, 0.3), 0 8px 10px -6px rgba(13, 148, 136, 0.2);
+    }
+
+    .audio-progress-rail {
+      cursor: pointer;
+      position: relative;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 9999px;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+    .audio-progress-rail:hover {
+      height: 10px;
+    }
+    .audio-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #facc15, #f59e0b);
+      border-radius: 9999px;
+      width: 0%;
+      transition: width 0.15s linear;
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
+    }
+
+    .player-wave-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      height: 18px;
+    }
+    .player-wave-bar {
+      width: 3.5px;
+      border-radius: 9999px;
+      background: #fef08a;
+      transition: height 0.15s ease;
+    }
+    .player-wave-active .player-wave-bar:nth-child(1) { animation: waveAnim 0.5s ease-in-out infinite alternate; }
+    .player-wave-active .player-wave-bar:nth-child(2) { animation: waveAnim 0.7s ease-in-out infinite 0.15s alternate; }
+    .player-wave-active .player-wave-bar:nth-child(3) { animation: waveAnim 0.4s ease-in-out infinite 0.25s alternate; }
+    .player-wave-active .player-wave-bar:nth-child(4) { animation: waveAnim 0.6s ease-in-out infinite 0.1s alternate; }
+    .player-wave-active .player-wave-bar:nth-child(5) { animation: waveAnim 0.8s ease-in-out infinite 0.3s alternate; }
+
+    @keyframes waveAnim {
+      0% { height: 4px; }
+      100% { height: 18px; }
+    }
+
+    .sentence-row {
+      border-radius: 14px;
+      padding: 6px 10px;
+      transition: all 0.2s ease;
+    }
+    .sentence-row:hover {
+      background-color: rgba(224, 242, 254, 0.6);
+    }
+    .sentence-row.active-sentence {
+      background-color: rgba(254, 240, 138, 0.35);
+      border-right: 4px solid #0d9488;
+    }
+
+    @media print {
+      body { background: white !important; padding: 0 !important; }
+      .no-print { display: none !important; }
+      #worksheetContainer { box-shadow: none !important; border: none !important; margin: 0 !important; max-width: 100% !important; }
+    }
+  </style>
+</head>
+<body class="p-2 sm:p-5 lg:p-7 antialiased flex flex-col items-center">
+
+  <!-- TOP TOOLBAR -->
+  <header class="no-print w-full max-w-5xl bg-white/95 backdrop-blur-md rounded-2xl p-4 mb-5 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-600 to-teal-500 text-white flex items-center justify-center text-2xl font-black shadow-md shrink-0">
+        📘
+      </div>
+      <div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <h1 class="font-extrabold text-slate-800 text-base sm:text-lg">Welcome! PART 1 - صفحة 7 التفاعلية</h1>
+          <span class="text-xs font-black bg-sky-100 text-sky-800 px-2.5 py-0.5 rounded-full border border-sky-200 flex items-center gap-1 font-english">
+            <span>🇨🇦</span> Canadian Accent
+          </span>
+          <span class="text-xs font-black bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+            <span>🖐️</span> سحب وإفلات + لعب أدوار
+          </span>
+        </div>
+        <p class="text-xs text-slate-500 font-semibold mt-0.5">حل الفراغات بنظام السحب والإفلات، تدرب على المسائل الرياضية، واستمتع بلعبة لعب الأدوار بشخصيتين</p>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="flex items-center flex-wrap gap-2">
+      <!-- Live Score -->
+      <div class="px-4 py-2 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 rounded-xl text-xs font-black text-amber-900 flex items-center gap-1.5 shadow-xs">
+        <span>⭐</span>
+        <span id="globalScoreCounter">الدرجة: 1 / 18</span>
+      </div>
+
+      <!-- Test Canadian Voice -->
+      <button onclick="testCanadianVoice()" class="px-3.5 py-2 bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 rounded-xl text-xs font-black transition flex items-center gap-1.5 active:scale-95 shadow-xs">
+        <span>🇨🇦</span>
+        <span>صوت كندي 🎙️</span>
+      </button>
+
+      <!-- Toggle Arabic Translation -->
+      <button onclick="toggleArabicTranslations()" id="transBtn" class="px-3 py-2 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded-xl text-xs font-black transition flex items-center gap-1 active:scale-95">
+        <span>🌐</span>
+        <span id="transBtnLabel">الترجمة: مفعّلة</span>
+      </button>
+
+      <!-- Reset -->
+      <button onclick="resetAllActivities()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-black transition flex items-center gap-1 active:scale-95">
+        <span>🔄</span>
+        <span>إعادة تعيين</span>
+      </button>
+
+      <!-- Print -->
+      <button onclick="window.print()" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition" title="طباعة">
+        🖨️
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSHEET CONTAINER (PAGE 7) -->
+  <main id="worksheetContainer" class="w-full max-w-5xl bg-white rounded-[32px] shadow-2xl p-4 sm:p-8 lg:p-10 border-4 border-slate-100 relative overflow-hidden transition-all">
+
+    <!-- =========================================================================
+         SECTION 4: READ AND COMPLETE (DRAG AND DROP STORY)
+         ========================================================================= -->
+    <section class="mb-10 pb-8 border-b-2 border-slate-100" id="section4Container">
+      
+      <!-- Activity 4 Title -->
+      <div class="flex items-center justify-between pb-3 mb-4 flex-wrap gap-2">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-sky-600 text-white font-english font-black flex items-center justify-center text-lg shadow-sm shrink-0">
+            4
+          </div>
+          <div class="flex items-center gap-2">
+            <h2 class="font-english text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2" dir="ltr">
+              <span>Read and complete.</span>
+              <span class="text-xl">📖✏️</span>
+            </h2>
+            <button onclick="speechEngine.speak('Activity four. Read and complete.')" class="w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-800 flex items-center justify-center text-sm transition" title="استمع للعنوان">
+              🎧
+            </button>
+          </div>
+        </div>
+
+        <div class="text-xs font-bold text-sky-800 bg-sky-50 px-3 py-1.5 rounded-xl border border-sky-200 flex items-center gap-1.5">
+          <span>🖐️</span>
+          <span>اسحب الكلمة أو انقر عليها ثم انقر على الفراغ المناسب</span>
+        </div>
+      </div>
+
+      <!-- Word Bank Pill Bar (Matching page 7 exactly) -->
+      <div class="p-4 rounded-2xl bg-slate-50 border-2 border-slate-200 mb-6" dir="ltr">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-black text-slate-700 font-english uppercase tracking-wider flex items-center gap-1.5">
+            <span>🏷️</span> Word Bank (صندوق الكلمات):
+          </span>
+          <span class="text-[11px] font-bold text-slate-500" dir="rtl">
+            اختر كلمة بالسحب أو النقر لوضعها في القصة
+          </span>
+        </div>
+
+        <!-- Word Bank Chips -->
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3 font-english" id="wordBankContainer">
+          <!-- Dynamically injected chips -->
+        </div>
+      </div>
+
+      <!-- Story Layout: Story Text on Left (LTR), Sebastian Running to School on Right -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center" dir="ltr">
+
+        <!-- Story Passage (Col-span 8) -->
+        <div class="lg:col-span-8 p-5 sm:p-6 rounded-3xl bg-sky-50/40 border-2 border-sky-200 font-english relative shadow-xs" id="storyTextCard">
+          <!-- ===============================================================
+               FULL PASSAGE AUDIO PLAYER COMPONENT (مقطع صوتي تفاعلي متكامل)
+               =============================================================== -->
+          <div class="audio-player-card text-white p-4 sm:p-5 rounded-2xl mb-5 shadow-lg border border-teal-300/40 relative overflow-hidden" dir="ltr">
+            
+            <!-- Player Top Info Header -->
+            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-lg shadow-inner">
+                  🎧
+                </div>
+                <div>
+                  <h4 class="font-black text-sm sm:text-base text-amber-200 tracking-wide flex items-center gap-2">
+                    <span>Story Audio Track: "Some Time Ago, at School"</span>
+                  </h4>
+                  <p class="text-[11px] text-teal-100 font-semibold" dir="rtl">
+                    مقطع صوتي تفاعلي كامل مع تزامن الكلمات لحظة بلحظة (Karaoke)
+                  </p>
+                </div>
+              </div>
+
+              <!-- Canadian Voice & Equalizer Badge -->
+              <div class="flex items-center gap-2">
+                <div class="px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-[11px] font-black text-white flex items-center gap-1.5">
+                  <span>🇨🇦</span>
+                  <span>Canadian Accent</span>
+                </div>
+                <div id="playerWaveBars" class="player-wave-container px-2 py-1 bg-black/20 rounded-lg">
+                  <div class="player-wave-bar h-2"></div>
+                  <div class="player-wave-bar h-3"></div>
+                  <div class="player-wave-bar h-4"></div>
+                  <div class="player-wave-bar h-2"></div>
+                  <div class="player-wave-bar h-3"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Audio Progress Bar with Time Display -->
+            <div class="mb-3">
+              <div class="audio-progress-rail rounded-full" onclick="handleSeekProgress(event)" id="audioProgressRail" title="اضغط للانتقال لموقع بالصوت">
+                <div class="audio-progress-fill" id="audioProgressFill"></div>
+              </div>
+              <div class="flex items-center justify-between mt-1 text-[11px] font-bold text-teal-100 font-mono">
+                <span id="playerCurrentTime">00:00</span>
+                <span id="playerActiveSentenceLabel" class="text-amber-200 font-sans font-bold">جاهز للتشغيل</span>
+                <span id="playerTotalTime">00:30</span>
+              </div>
+            </div>
+
+            <!-- Main Player Controls: Play, Pause, Replay, Stop, Speed -->
+            <div class="flex items-center justify-between flex-wrap gap-2 pt-2 border-t border-white/15">
+              
+              <!-- Play / Pause / Replay Buttons -->
+              <div class="flex items-center gap-2">
+                <!-- Master Play/Pause Button -->
+                <button onclick="toggleStoryAudioPlayback()" id="mainPlayPauseBtn" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-teal-950 font-black rounded-xl text-xs sm:text-sm transition flex items-center gap-2 shadow-md active:scale-95">
+                  <span id="mainPlayIcon">▶️</span>
+                  <span id="mainPlayLabel">تشغيل المقطع الصوتي</span>
+                </button>
+
+                <!-- Replay from Start -->
+                <button onclick="replayStoryAudioFromStart()" class="p-2 bg-white/20 hover:bg-white/30 text-white rounded-xl text-xs font-bold transition active:scale-95" title="إعادة تشغيل من البداية">
+                  🔁
+                </button>
+
+                <!-- Stop Button -->
+                <button onclick="stopStoryAudioPlayback()" class="p-2 bg-white/15 hover:bg-rose-500/80 text-white rounded-xl text-xs font-bold transition active:scale-95" title="إيقاف المقطع">
+                  ⏹️
+                </button>
+              </div>
+
+              <!-- Speed and Sentence Selection Controls -->
+              <div class="flex items-center gap-2">
+                <!-- Speed Toggle -->
+                <div class="flex items-center bg-black/25 rounded-xl p-0.5 border border-white/15 text-[11px] font-black">
+                  <button onclick="setPlayerPlaybackSpeed(0.72)" id="spdBtn-08" class="px-2 py-1 rounded-lg text-teal-100 hover:text-white transition">هادئة 0.7x</button>
+                  <button onclick="setPlayerPlaybackSpeed(0.82)" id="spdBtn-10" class="px-2.5 py-1 rounded-lg bg-white/25 text-amber-200 font-black shadow-xs transition">عادية وطبيعية ✨</button>
+                  <button onclick="setPlayerPlaybackSpeed(0.95)" id="spdBtn-12" class="px-2 py-1 rounded-lg text-teal-100 hover:text-white transition">سريعة 1.0x</button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Sentence-by-Sentence Quick Selector Chips -->
+            <div class="mt-3 pt-2 border-t border-white/10 flex items-center gap-1.5 flex-wrap text-[11px]">
+              <span class="text-teal-200 font-bold" dir="rtl">استمع لجملة محددة:</span>
+              <button onclick="playSpecificSentence(0)" class="px-2.5 py-1 rounded-lg bg-white/15 hover:bg-white/25 text-white font-bold transition">العنوان 📌</button>
+              <button onclick="playSpecificSentence(1)" class="px-2.5 py-1 rounded-lg bg-white/15 hover:bg-white/25 text-white font-bold transition">الجملة 1 🔔</button>
+              <button onclick="playSpecificSentence(2)" class="px-2.5 py-1 rounded-lg bg-white/15 hover:bg-white/25 text-white font-bold transition">الجملة 2 🏃</button>
+              <button onclick="playSpecificSentence(3)" class="px-2.5 py-1 rounded-lg bg-white/15 hover:bg-white/25 text-white font-bold transition">الجملة 3 ⏰</button>
+              <button onclick="playSpecificSentence(4)" class="px-2.5 py-1 rounded-lg bg-white/15 hover:bg-white/25 text-white font-bold transition">الجملة 4 🏫</button>
+            </div>
+
+          </div>
+
+          <!-- ===============================================================
+               STORY PASSAGE WITH FULL WORD-LEVEL KARAOKE SPANS
+               =============================================================== -->
+          <div id="storyPassageContainer" class="text-base sm:text-lg font-bold text-slate-800 leading-relaxed space-y-4">
+            
+            <!-- Title Row (Sentence 0) with Karaoke Spans -->
+            <div class="sentence-row pb-2 border-b border-sky-100 flex items-center justify-between flex-wrap gap-2" id="sent-row-0">
+              <h3 class="text-xl sm:text-2xl font-black text-teal-800 flex items-center flex-wrap gap-1.5">
+                <span class="k-word" data-k-text="Some">Some</span>
+                <span class="k-word" data-k-text="Time">Time</span>
+                <!-- Blank 1: Ago (Given Example) -->
+                <span class="k-word px-3 py-1 bg-white border-2 border-teal-500 rounded-xl text-teal-700 font-black text-lg underline shadow-xs inline-flex items-center gap-1" data-k-text="Ago">
+                  <span class="text-xs bg-teal-100 text-teal-800 px-1 rounded">1</span> Ago
+                </span>
+                <span class="k-word" data-k-text="at">, at</span>
+                <span class="k-word" data-k-text="School">School</span>
+              </h3>
+              <button onclick="playSpecificSentence(0)" class="w-7 h-7 rounded-lg bg-teal-100 hover:bg-teal-200 text-teal-800 flex items-center justify-center text-xs transition" title="استمع للعنوان">
+                🔊
+              </button>
+            </div>
+
+            <!-- Paragraph 1 (Sentence 1) -->
+            <div class="sentence-row" id="sent-row-1">
+              <div class="flex items-start justify-between gap-2">
+                <p class="flex-1 leading-loose">
+                  <span class="k-word" data-k-text="I">I</span>
+                  <span class="k-word" data-k-text="asked">asked</span>
+                  <span class="k-word" data-k-text="my">my</span>
+                  <span class="k-word" data-k-text="classmate">classmate,</span>
+                  <span class="k-word" data-k-text="Sebastian">Sebastian,</span>
+                  <span class="k-word" data-k-text="how">how</span>
+                  <span class="k-word" data-k-text="much">much</span>
+                  <span class="drop-slot k-word inline-flex items-center justify-center mx-1 px-3 py-1 bg-white border-2 border-dashed border-sky-400 rounded-xl text-sky-900 font-black text-base shadow-xs min-w-[100px] h-9 align-middle cursor-pointer" data-slot="2" data-k-slot="2" onclick="handleSlotClick(2)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 2)">
+                    <span class="slot-text text-slate-400 text-xs">² [.........]</span>
+                  </span>
+                  <span class="k-word" data-k-text="we">we</span>
+                  <span class="k-word" data-k-text="had">had</span>
+                  <span class="k-word" data-k-text="until">until</span>
+                  <span class="k-word" data-k-text="the">the</span>
+                  <span class="k-word" data-k-text="bell">bell</span>
+                  <span class="k-word" data-k-text="rang">rang.</span>
+                  <span class="k-word" data-k-text="He">He</span>
+                  <span class="k-word" data-k-text="checked">checked</span>
+                  <span class="k-word" data-k-text="the">the</span>
+                  <span class="drop-slot k-word inline-flex items-center justify-center mx-1 px-3 py-1 bg-white border-2 border-dashed border-sky-400 rounded-xl text-sky-900 font-black text-base shadow-xs min-w-[100px] h-9 align-middle cursor-pointer" data-slot="3" data-k-slot="3" onclick="handleSlotClick(3)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 3)">
+                    <span class="slot-text text-slate-400 text-xs">³ [.........]</span>
+                  </span>
+                  <span class="k-word" data-k-text="on">on</span>
+                  <span class="k-word" data-k-text="the">the</span>
+                  <span class="k-word" data-k-text="wall">wall.</span>
+                </p>
+                <button onclick="playSpecificSentence(1)" class="w-7 h-7 rounded-lg bg-sky-100 hover:bg-sky-200 text-sky-800 flex items-center justify-center text-xs transition shrink-0 mt-1" title="استمع للجملة">
+                  🔊
+                </button>
+              </div>
+            </div>
+
+            <!-- Paragraph 2 (Sentence 2) -->
+            <div class="sentence-row" id="sent-row-2">
+              <div class="flex items-start justify-between gap-2">
+                <p class="flex-1 leading-loose">
+                  <span class="k-word" data-k-text="He">He</span>
+                  <span class="k-word" data-k-text="said">said</span>
+                  <span class="k-word" data-k-text="we">we</span>
+                  <span class="k-word" data-k-text="needed">needed</span>
+                  <span class="k-word" data-k-text="to">to</span>
+                  <span class="k-word" data-k-text="hurry">hurry</span>
+                  <span class="k-word" data-k-text="up">up</span>
+                  <span class="k-word" data-k-text="or">or</span>
+                  <span class="k-word" data-k-text="we">we</span>
+                  <span class="k-word" data-k-text="would">would</span>
+                  <span class="k-word" data-k-text="be">be</span>
+                  <span class="drop-slot k-word inline-flex items-center justify-center mx-1 px-3 py-1 bg-white border-2 border-dashed border-sky-400 rounded-xl text-sky-900 font-black text-base shadow-xs min-w-[90px] h-9 align-middle cursor-pointer" data-slot="4" data-k-slot="4" onclick="handleSlotClick(4)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 4)">
+                    <span class="slot-text text-slate-400 text-xs">⁴ [.........]</span>
+                  </span>
+                  <span class="k-word" data-k-text="for">for</span>
+                  <span class="k-word" data-k-text="class">class</span>
+                  <span class="k-word" data-k-text="again">again!</span>
+                  <span class="k-word" data-k-text="Just">Just</span>
+                  <span class="k-word" data-k-text="then">then,</span>
+                  <span class="k-word" data-k-text="the">the</span>
+                  <span class="k-word" data-k-text="bell">bell</span>
+                  <span class="k-word" data-k-text="rang">rang.</span>
+                  <span class="k-word" data-k-text="Oh">"Oh,</span>
+                  <span class="k-word" data-k-text="no">no!</span>
+                  <span class="k-word" data-k-text="It's">It's</span>
+                  <span class="drop-slot k-word inline-flex items-center justify-center mx-1 px-3 py-1 bg-white border-2 border-dashed border-sky-400 rounded-xl text-sky-900 font-black text-base shadow-xs min-w-[85px] h-9 align-middle cursor-pointer" data-slot="5" data-k-slot="5" onclick="handleSlotClick(5)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 5)">
+                    <span class="slot-text text-slate-400 text-xs">⁵ [.........]</span>
+                  </span>
+                  <span class="k-word" data-k-text="o'clock">o'clock</span>
+                  <span class="k-word" data-k-text="already">already."</span>
+                </p>
+                <button onclick="playSpecificSentence(2)" class="w-7 h-7 rounded-lg bg-sky-100 hover:bg-sky-200 text-sky-800 flex items-center justify-center text-xs transition shrink-0 mt-1" title="استمع للجملة">
+                  🔊
+                </button>
+              </div>
+            </div>
+
+            <!-- Paragraph 3 (Sentence 3) -->
+            <div class="sentence-row" id="sent-row-3">
+              <div class="flex items-start justify-between gap-2">
+                <p class="flex-1 leading-loose">
+                  <span class="k-word" data-k-text="We">We</span>
+                  <span class="k-word" data-k-text="really">really</span>
+                  <span class="k-word" data-k-text="needed">needed</span>
+                  <span class="k-word" data-k-text="to">to</span>
+                  <span class="k-word" data-k-text="arrive">arrive</span>
+                  <span class="drop-slot k-word inline-flex items-center justify-center mx-1 px-3 py-1 bg-white border-2 border-dashed border-sky-400 rounded-xl text-sky-900 font-black text-base shadow-xs min-w-[90px] h-9 align-middle cursor-pointer" data-slot="6" data-k-slot="6" onclick="handleSlotClick(6)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 6)">
+                    <span class="slot-text text-slate-400 text-xs">⁶ [.........]</span>
+                  </span>
+                  <span class="k-word" data-k-text="this">this</span>
+                  <span class="k-word" data-k-text="time">time.</span>
+                  <span class="k-word" data-k-text="A">A</span>
+                  <span class="k-word" data-k-text="few">few</span>
+                  <span class="drop-slot k-word inline-flex items-center justify-center mx-1 px-3 py-1 bg-white border-2 border-dashed border-sky-400 rounded-xl text-sky-900 font-black text-base shadow-xs min-w-[100px] h-9 align-middle cursor-pointer" data-slot="7" data-k-slot="7" onclick="handleSlotClick(7)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 7)">
+                    <span class="slot-text text-slate-400 text-xs">⁷ [.........]</span>
+                  </span>
+                  <span class="k-word" data-k-text="ago">ago,</span>
+                  <span class="k-word" data-k-text="we">we</span>
+                  <span class="k-word" data-k-text="weren't">weren't</span>
+                  <span class="k-word" data-k-text="on">on</span>
+                  <span class="k-word" data-k-text="time">time</span>
+                  <span class="k-word" data-k-text="and">and</span>
+                  <span class="k-word" data-k-text="the">the</span>
+                  <span class="k-word" data-k-text="teacher">teacher</span>
+                  <span class="k-word" data-k-text="got">got</span>
+                  <span class="k-word" data-k-text="mad">mad.</span>
+                </p>
+                <button onclick="playSpecificSentence(3)" class="w-7 h-7 rounded-lg bg-sky-100 hover:bg-sky-200 text-sky-800 flex items-center justify-center text-xs transition shrink-0 mt-1" title="استمع للجملة">
+                  🔊
+                </button>
+              </div>
+            </div>
+
+            <!-- Paragraph 4 (Sentence 4) -->
+            <div class="sentence-row" id="sent-row-4">
+              <div class="flex items-start justify-between gap-2">
+                <p class="flex-1 leading-loose">
+                  <span class="text-teal-900 font-black">"</span>
+                  <span class="drop-slot k-word inline-flex items-center justify-center mx-1 px-3 py-1 bg-white border-2 border-dashed border-sky-400 rounded-xl text-sky-900 font-black text-base shadow-xs min-w-[110px] h-9 align-middle cursor-pointer" data-slot="8" data-k-slot="8" onclick="handleSlotClick(8)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 8)">
+                    <span class="slot-text text-slate-400 text-xs">⁸ [.........]</span>
+                  </span>
+                  <span class="k-word" data-k-text="does">does</span>
+                  <span class="k-word" data-k-text="it">it</span>
+                  <span class="k-word" data-k-text="take">take</span>
+                  <span class="k-word" data-k-text="to">to</span>
+                  <span class="k-word" data-k-text="get">get</span>
+                  <span class="k-word" data-k-text="to">to</span>
+                  <span class="k-word" data-k-text="class">class?"</span>
+                  <span class="k-word" data-k-text="I">I</span>
+                  <span class="k-word" data-k-text="asked">asked</span>
+                  <span class="k-word" data-k-text="Sebastian">Sebastian.</span>
+                  <span class="k-word" data-k-text="Not">"Not</span>
+                  <span class="k-word" data-k-text="long">long!"</span>
+                  <span class="k-word" data-k-text="he">he</span>
+                  <span class="k-word" data-k-text="answered">answered.</span>
+                  <span class="k-word" data-k-text="Hurry">"Hurry</span>
+                  <span class="k-word" data-k-text="up">up!"</span>
+                </p>
+                <button onclick="playSpecificSentence(4)" class="w-7 h-7 rounded-lg bg-sky-100 hover:bg-sky-200 text-sky-800 flex items-center justify-center text-xs transition shrink-0 mt-1" title="استمع للجملة">
+                  🔊
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Arabic Story Summary & Helper (Bilingual Support) -->
+          <div class="mt-4 pt-3 border-t border-sky-100 text-xs font-bold text-sky-900 arabic-trans-box" dir="rtl">
+            <span class="text-teal-700 font-black">ترجمة القصة:</span> سألت زميلي سباستيان كم من <span class="text-sky-700 font-black">الوقت (time)</span> تبقى لدينا حتى يدق الجرس. نظر إلى <span class="text-sky-700 font-black">التقويم (calendar)</span> على الحائط، وقال إنه يجب أن نسرع وإلا سنكون <span class="text-sky-700 font-black">متأخرين (late)</span> عن الفصل مجدداً! دق الجرس وقال: "الساعة تشير إلى <span class="text-sky-700 font-black">الواحدة (one)</span> تماماً". كان علينا أن نصل <span class="text-sky-700 font-black">مبكرين (early)</span>، فمنذ بضعة <span class="text-sky-700 font-black">أشهر (months)</span> لم نكن في الموعد وغضب المعلم. فسألته: "<span class="text-sky-700 font-black">كم المدة (How long)</span> التي يستغرقها الوصول؟"، فأجاب: "ليس طويلاً، أسرع!".
+          </div>
+
+          <!-- Check Section 4 Answers Button -->
+          <div class="mt-4 flex items-center justify-between pt-2 border-t border-sky-100 flex-wrap gap-2">
+            <span id="storyScoreFeedback" class="text-xs font-black text-slate-600">
+              تم ملء: 0 من 7 فراغات
+            </span>
+            <div class="flex items-center gap-2">
+              <button onclick="checkStoryAnswers()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-sm transition active:scale-95 flex items-center gap-1.5">
+                <span>✅</span>
+                <span>فحص إجابات القصة</span>
+              </button>
+              <button onclick="resetStorySlots()" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-bold transition active:scale-95">
+                إعادة المحاولة 🔄
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sebastian Running Illustration (Col-span 4) -->
+        <div class="lg:col-span-4 flex flex-col items-center justify-center p-4 bg-gradient-to-b from-amber-50/50 to-orange-50/50 rounded-3xl border-2 border-amber-200 shadow-sm relative overflow-hidden" id="sebastianCard">
+          
+          <div class="w-full flex items-center justify-between mb-2">
+            <span class="px-2.5 py-1 rounded-full bg-amber-500 text-white font-english text-xs font-black">
+              Sebastian
+            </span>
+            <button onclick="speechEngine.speak('Hurry up, or we will be late for class!')" class="w-7 h-7 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 flex items-center justify-center text-xs transition">
+              🔊
+            </button>
+          </div>
+
+          <!-- Sebastian Character SVG (Running to school with backpack and notebook) -->
+          <div class="w-48 h-64 sm:w-56 sm:h-72 transition-all duration-300" id="sebastianImgWrapper">
+            <svg viewBox="0 0 200 240" class="w-full h-full drop-shadow-md">
+              <!-- Background School Wall & Trees -->
+              <rect x="15" y="25" width="170" height="180" rx="12" fill="#fed7aa" opacity="0.25"/>
+              <rect x="25" y="40" width="40" height="45" rx="4" fill="#93c5fd" opacity="0.6"/>
+              <line x1="45" y1="40" x2="45" y2="85" stroke="#ffffff" stroke-width="2"/>
+              <line x1="25" y1="62" x2="65" y2="62" stroke="#ffffff" stroke-width="2"/>
+              <path d="M0 210 Q100 200 200 210 L200 240 L0 240 Z" fill="#cbd5e1"/>
+
+              <!-- Running Boy (Sebastian) -->
+              <!-- Backpack -->
+              <rect x="110" y="80" width="30" height="50" rx="10" fill="#0284c7" stroke="#0369a1" stroke-width="3"/>
+              <rect x="115" y="90" width="20" height="25" rx="6" fill="#38bdf8"/>
+
+              <!-- Body / Orange Jacket & White Shirt -->
+              <path d="M80 80 L120 80 L125 145 L75 145 Z" fill="#ea580c" stroke="#c2410c" stroke-width="3"/>
+              <polygon points="90,80 110,80 105,125 95,125" fill="#ffffff"/>
+
+              <!-- Head & Curly Brown Hair -->
+              <circle cx="100" cy="55" r="24" fill="#fbcfe8"/>
+              <ellipse cx="100" cy="56" rx="22" ry="24" fill="#fed7aa"/>
+              <!-- Curly Hair clusters -->
+              <circle cx="85" cy="40" r="12" fill="#78350f"/>
+              <circle cx="100" cy="35" r="14" fill="#78350f"/>
+              <circle cx="115" cy="40" r="12" fill="#78350f"/>
+              <circle cx="80" cy="52" r="10" fill="#78350f"/>
+              <circle cx="120" cy="52" r="10" fill="#78350f"/>
+
+              <!-- Face details -->
+              <circle cx="92" cy="56" r="3.5" fill="#1e293b"/>
+              <circle cx="108" cy="56" r="3.5" fill="#1e293b"/>
+              <path d="M96 66 Q100 71 106 66" stroke="#9a3412" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <circle cx="87" cy="62" r="3" fill="#f43f5e" opacity="0.4"/>
+              <circle cx="113" cy="62" r="3" fill="#f43f5e" opacity="0.4"/>
+
+              <!-- Left Arm holding green notebook -->
+              <path d="M80 90 L60 115" stroke="#ea580c" stroke-width="12" stroke-linecap="round"/>
+              <!-- Green Notebook with white pages -->
+              <rect x="42" y="105" width="22" height="30" rx="3" fill="#22c55e" stroke="#15803d" stroke-width="2.5" transform="rotate(-15 53 120)"/>
+              <rect x="45" y="108" width="16" height="24" rx="2" fill="#ffffff" transform="rotate(-15 53 120)"/>
+              <line x1="48" y1="114" x2="58" y2="112" stroke="#22c55e" stroke-width="2"/>
+              <circle cx="60" cy="118" r="6" fill="#fed7aa"/>
+
+              <!-- Right Arm swinging forward -->
+              <path d="M120 90 L135 120" stroke="#ea580c" stroke-width="12" stroke-linecap="round"/>
+              <circle cx="137" cy="122" r="6" fill="#fed7aa"/>
+
+              <!-- Blue Jeans in running pose -->
+              <!-- Front leg (bending forward) -->
+              <path d="M85 145 L70 175 L80 195" stroke="#1e3a8a" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Back leg (extended back) -->
+              <path d="M115 145 L135 170 L155 190" stroke="#1e3a8a" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+
+              <!-- Orange Running Shoes -->
+              <!-- Front shoe -->
+              <ellipse cx="85" cy="198" rx="14" ry="7" fill="#ea580c"/>
+              <rect x="75" y="198" width="20" height="4" rx="2" fill="#ffffff"/>
+              <!-- Back shoe -->
+              <ellipse cx="160" cy="193" rx="14" ry="7" fill="#ea580c"/>
+              <rect x="150" y="193" width="20" height="4" rx="2" fill="#ffffff"/>
+            </svg>
+          </div>
+
+          <div class="mt-2 text-center">
+            <span class="text-xs font-black text-amber-900 block font-english">"Not long! Hurry up!"</span>
+            <span class="text-[11px] font-bold text-amber-700 arabic-trans-box block mt-0.5">"ليس طويلاً! أسرع للوصول إلى الفصل!"</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         SECTION 5: COMPLETE WITH YOUR PARTNER (MATH IN WORDS & AUDIO CHECK)
+         ========================================================================= -->
+    <section class="mb-10 pb-8 border-b-2 border-slate-100" id="section5Container">
+      
+      <!-- Activity 5 Title -->
+      <div class="flex items-center justify-between pb-3 mb-4 flex-wrap gap-2">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-teal-600 text-white font-english font-black flex items-center justify-center text-lg shadow-sm shrink-0">
+            5
+          </div>
+          <div class="flex items-center gap-2">
+            <h2 class="font-english text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2" dir="ltr">
+              <span class="text-xl">🎧</span>
+              <span>Complete with your partner. Then listen, check, and say.</span>
+            </h2>
+            <button onclick="speechEngine.speak('Activity five. Complete with your partner. Then listen, check, and say.')" class="w-8 h-8 rounded-full bg-teal-100 hover:bg-teal-200 text-teal-800 flex items-center justify-center text-sm transition" title="استمع للعنوان">
+              🎧
+            </button>
+          </div>
+        </div>
+
+        <div class="text-xs font-bold text-teal-800 bg-teal-50 px-3 py-1.5 rounded-xl border border-teal-200 flex items-center gap-1.5">
+          <span>🔢</span>
+          <span>اكتب ناتج الجمع بالكلمات الإنجليزية ثم استمع وتحقق</span>
+        </div>
+      </div>
+
+      <!-- Main Math Grid + Partner Speech Bubbles (Matching page 7 layout) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center" dir="ltr">
+
+        <!-- Left Box: 5 Math Equations (Col-span 7) -->
+        <div class="lg:col-span-7 p-5 rounded-3xl bg-white border-4 border-teal-300 shadow-sm font-english" id="mathCardBox">
+          <div class="space-y-4">
+            
+            <!-- Equation 1: 130 + 26 = one hundred fifty-six (Example in book) -->
+            <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl bg-teal-50/60 border border-teal-200" id="math-row-1">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-full bg-teal-600 text-white text-xs font-black flex items-center justify-center">1</span>
+                <span class="text-base sm:text-lg font-black text-slate-800">130 + 26 =</span>
+              </div>
+              <div class="flex-1 max-w-xs text-right">
+                <span class="font-black text-teal-700 text-sm sm:text-base italic px-3 py-1 bg-white rounded-xl border border-teal-300 shadow-2xs inline-block">
+                  one hundred fifty-six
+                </span>
+              </div>
+              <button onclick="playMathAudio(1)" class="w-8 h-8 rounded-xl bg-teal-100 hover:bg-teal-200 text-teal-800 flex items-center justify-center text-xs transition shrink-0" title="استمع للحل">
+                🔊
+              </button>
+            </div>
+
+            <!-- Equation 2: 300 + 250 = five hundred fifty -->
+            <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl bg-white border border-slate-200 hover:border-teal-300 transition" id="math-row-2">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-full bg-slate-200 text-slate-700 text-xs font-black flex items-center justify-center">2</span>
+                <span class="text-base sm:text-lg font-black text-slate-800">300 + 250 =</span>
+              </div>
+              <div class="flex-1 max-w-xs">
+                <input type="text" id="math-input-2" placeholder="Write in words..." class="w-full px-3 py-1.5 rounded-xl border-2 border-slate-200 focus:border-teal-500 font-bold text-xs sm:text-sm text-slate-800 outline-none transition text-center" oninput="validateMathDirect(2)">
+              </div>
+              <button onclick="playMathAudio(2)" class="w-8 h-8 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 flex items-center justify-center text-xs transition shrink-0" title="استمع للمسألة والتحقق">
+                🔊
+              </button>
+            </div>
+
+            <!-- Equation 3: 450 + 220 = six hundred seventy -->
+            <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl bg-white border border-slate-200 hover:border-teal-300 transition" id="math-row-3">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-full bg-slate-200 text-slate-700 text-xs font-black flex items-center justify-center">3</span>
+                <span class="text-base sm:text-lg font-black text-slate-800">450 + 220 =</span>
+              </div>
+              <div class="flex-1 max-w-xs">
+                <input type="text" id="math-input-3" placeholder="Write in words..." class="w-full px-3 py-1.5 rounded-xl border-2 border-slate-200 focus:border-teal-500 font-bold text-xs sm:text-sm text-slate-800 outline-none transition text-center" oninput="validateMathDirect(3)">
+              </div>
+              <button onclick="playMathAudio(3)" class="w-8 h-8 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 flex items-center justify-center text-xs transition shrink-0" title="استمع للمسألة والتحقق">
+                🔊
+              </button>
+            </div>
+
+            <!-- Equation 4: 500 + 500 = one thousand -->
+            <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl bg-white border border-slate-200 hover:border-teal-300 transition" id="math-row-4">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-full bg-slate-200 text-slate-700 text-xs font-black flex items-center justify-center">4</span>
+                <span class="text-base sm:text-lg font-black text-slate-800">500 + 500 =</span>
+              </div>
+              <div class="flex-1 max-w-xs">
+                <input type="text" id="math-input-4" placeholder="Write in words..." class="w-full px-3 py-1.5 rounded-xl border-2 border-slate-200 focus:border-teal-500 font-bold text-xs sm:text-sm text-slate-800 outline-none transition text-center" oninput="validateMathDirect(4)">
+              </div>
+              <button onclick="playMathAudio(4)" class="w-8 h-8 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 flex items-center justify-center text-xs transition shrink-0" title="استمع للمسألة والتحقق">
+                🔊
+              </button>
+            </div>
+
+            <!-- Equation 5: 270 + 230 = five hundred -->
+            <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl bg-white border border-slate-200 hover:border-teal-300 transition" id="math-row-5">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-full bg-slate-200 text-slate-700 text-xs font-black flex items-center justify-center">5</span>
+                <span class="text-base sm:text-lg font-black text-slate-800">270 + 230 =</span>
+              </div>
+              <div class="flex-1 max-w-xs">
+                <input type="text" id="math-input-5" placeholder="Write in words..." class="w-full px-3 py-1.5 rounded-xl border-2 border-slate-200 focus:border-teal-500 font-bold text-xs sm:text-sm text-slate-800 outline-none transition text-center" oninput="validateMathDirect(5)">
+              </div>
+              <button onclick="playMathAudio(5)" class="w-8 h-8 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 flex items-center justify-center text-xs transition shrink-0" title="استمع للمسألة والتحقق">
+                🔊
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Bottom controls for Math -->
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2 text-xs font-black">
+            <span id="mathStatusText" class="text-slate-500">تم حل 0 من 4 مسائل</span>
+            <div class="flex items-center gap-2">
+              <button onclick="checkAllMathEquations()" class="px-3.5 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl transition shadow-xs">
+                فحص الإجابات ✅
+              </button>
+              <button onclick="playAllMathSequentially()" class="px-3.5 py-1.5 bg-sky-100 hover:bg-sky-200 text-sky-800 rounded-xl transition">
+                استماع للكل 🎧
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Box: Partner Dialogue Bubbles (Col-span 5) -->
+        <div class="lg:col-span-5 flex flex-col gap-4 font-english justify-center">
+          
+          <!-- Green Speech Bubble (Asking) with Karaoke words -->
+          <div onclick="playBubblePrompt(1)" id="mathPromptBubble1" class="cursor-pointer p-4 rounded-3xl bg-white border-2 border-emerald-400 hover:border-emerald-500 shadow-md transition-all relative bubble-tail-left">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-black text-emerald-700 uppercase tracking-wider">Partner A (يسأل)</span>
+              <span>🗣️</span>
+            </div>
+            <p class="text-base sm:text-lg font-black text-slate-800 leading-snug" id="mathBubbleText1">
+              <span class="k-word">"What</span>
+              <span class="k-word">is</span>
+              <span class="k-word">one</span>
+              <span class="k-word">hundred</span>
+              <span class="k-word">thirty</span>
+              <span class="k-word">plus</span>
+              <span class="k-word">twenty-six?"</span>
+            </p>
+            <p class="text-xs font-bold text-emerald-800 arabic-trans-box mt-1 text-right" dir="rtl">
+              "ما هو ناتج مائة وثلاثون زائد ستة وعشرون؟"
+            </p>
+          </div>
+
+          <!-- Purple Speech Bubble (Answering) with Karaoke words -->
+          <div onclick="playBubblePrompt(2)" id="mathPromptBubble2" class="cursor-pointer p-4 rounded-3xl bg-white border-2 border-purple-400 hover:border-purple-500 shadow-md transition-all relative bubble-tail-left">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-black text-purple-700 uppercase tracking-wider">Partner B (يجيب)</span>
+              <span>🗣️</span>
+            </div>
+            <p class="text-base sm:text-lg font-black text-slate-800 leading-snug" id="mathBubbleText2">
+              <span class="k-word">"I</span>
+              <span class="k-word">think</span>
+              <span class="k-word">it's</span>
+              <span class="k-word">one</span>
+              <span class="k-word">hundred</span>
+              <span class="k-word">fifty-six."</span>
+            </p>
+            <p class="text-xs font-bold text-purple-800 arabic-trans-box mt-1 text-right" dir="rtl">
+              "أعتقد أنه مائة وستة وخمسون."
+            </p>
+          </div>
+
+          <div class="p-3 bg-amber-50 rounded-2xl border border-amber-200 text-xs font-bold text-amber-900" dir="rtl">
+            💡 <span class="font-black">نصيحة تعليمية:</span> انقر على أي فقاعة للاستماع لنطق السؤال والجواب باللكنة الكندية المتقنة!
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         SECTION 6: ASK AND ANSWER WITH YOUR PARTNER (INTERACTIVE ROLE-PLAY GAME)
+         ========================================================================= -->
+    <section class="mb-6 rounded-3xl border-4 border-indigo-200 p-5 sm:p-7 bg-gradient-to-b from-indigo-50/30 to-white relative shadow-sm" id="section6Container">
+      
+      <!-- Activity 6 Title -->
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-indigo-100 flex-wrap gap-2">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-indigo-600 text-white font-english font-black flex items-center justify-center text-lg shadow-sm shrink-0">
+            6
+          </div>
+          <div class="flex items-center gap-2">
+            <h2 class="font-english text-xl sm:text-2xl font-black text-slate-900 tracking-tight" dir="ltr">
+              Ask and answer the questions with your partner.
+            </h2>
+            <button onclick="speechEngine.speak('Activity six. Ask and answer the questions with your partner.')" class="w-8 h-8 rounded-full bg-indigo-100 hover:bg-indigo-200 text-indigo-800 flex items-center justify-center text-sm transition" title="استمع للعنوان">
+              🎧
+            </button>
+          </div>
+        </div>
+
+        <div class="text-xs font-bold text-indigo-800 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-200 flex items-center gap-1.5">
+          <span>🎭</span>
+          <span>لعبة لعب الأدوار بشخصيتين (سؤال وجواب تفاعلي)</span>
+        </div>
+      </div>
+
+      <!-- 5 Textbook Questions Selector Pill Bar -->
+      <div class="mb-6" dir="ltr">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-black text-slate-700 uppercase tracking-wider font-english">
+            Select Question to Role-Play (اختر السؤال لبدء المحادثة):
+          </span>
+          <span id="roleplayStatus" class="text-xs font-bold text-indigo-700" dir="rtl">
+            السؤال الحالي: 1 من 5
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 font-english">
+          <button onclick="selectRoleplayQuestion(1)" id="qtab-1" class="roleplay-tab-btn p-2.5 rounded-2xl border-2 border-indigo-500 bg-indigo-600 text-white font-black text-xs sm:text-sm shadow-xs transition active:scale-95 text-center">
+            Q1: Birthday 🎂
+          </button>
+          <button onclick="selectRoleplayQuestion(2)" id="qtab-2" class="roleplay-tab-btn p-2.5 rounded-2xl border-2 border-slate-200 bg-white hover:border-indigo-300 text-slate-700 font-black text-xs sm:text-sm shadow-xs transition active:scale-95 text-center">
+            Q2: June ☀️
+          </button>
+          <button onclick="selectRoleplayQuestion(3)" id="qtab-3" class="roleplay-tab-btn p-2.5 rounded-2xl border-2 border-slate-200 bg-white hover:border-indigo-300 text-slate-700 font-black text-xs sm:text-sm shadow-xs transition active:scale-95 text-center">
+            Q3: Hottest Month 🔥
+          </button>
+          <button onclick="selectRoleplayQuestion(4)" id="qtab-4" class="roleplay-tab-btn p-2.5 rounded-2xl border-2 border-slate-200 bg-white hover:border-indigo-300 text-slate-700 font-black text-xs sm:text-sm shadow-xs transition active:scale-95 text-center">
+            Q4: Favorite Month 🌟
+          </button>
+          <button onclick="selectRoleplayQuestion(5)" id="qtab-5" class="roleplay-tab-btn p-2.5 rounded-2xl border-2 border-slate-200 bg-white hover:border-indigo-300 text-slate-700 font-black text-xs sm:text-sm shadow-xs transition active:scale-95 text-center">
+            Q5: National Holidays 🇸🇦
+          </button>
+        </div>
+      </div>
+
+      <!-- The Two-Character Interactive Dialogue Stage -->
+      <div class="p-6 rounded-3xl bg-white border-2 border-indigo-200 shadow-sm relative overflow-hidden" dir="ltr">
+        
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          
+          <!-- Character 1: Laila (Dark hair, thinking/asking) - Left -->
+          <div class="md:col-span-6 flex flex-col items-center p-4 rounded-3xl bg-gradient-to-b from-emerald-50/50 to-white border-2 border-emerald-200 transition-all duration-300" id="charCard1">
+            
+            <!-- Character Badge & Audio Trigger -->
+            <div class="w-full flex items-center justify-between mb-3">
+              <span class="px-3 py-1 rounded-full bg-emerald-600 text-white font-english font-black text-xs flex items-center gap-1.5 shadow-2xs">
+                <span>👧</span>
+                <span>Laila (الشخصية 1 - تسأل)</span>
+              </span>
+              <button onclick="speakRoleplaySpeaker(1)" class="px-3 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 rounded-xl text-xs font-black transition flex items-center gap-1 active:scale-95">
+                <span>🔊</span>
+                <span>اسأل</span>
+              </button>
+            </div>
+
+            <!-- Speech Bubble for Character 1 -->
+            <div onclick="speakRoleplaySpeaker(1)" id="charBubble1" class="w-full min-h-[135px] flex flex-col justify-center items-center text-center cursor-pointer p-4 sm:p-5 rounded-[26px] modern-bubble-laila mb-4 relative bubble-tail-bottom font-english group">
+              <p id="char1QuestionText" class="text-sm sm:text-base font-black text-slate-800 leading-relaxed text-center w-full max-w-sm mx-auto">
+                "Which month is your birthday in?"
+              </p>
+              <div class="mt-2 inline-flex items-center justify-center">
+                <span id="char1QuestionAr" class="text-[11px] sm:text-xs font-bold text-emerald-800 arabic-trans-box bg-emerald-100/70 px-3 py-0.5 rounded-full border border-emerald-200/60" dir="rtl">
+                  "في أي شهر يصادف عيد ميلادك؟"
+                </span>
+              </div>
+            </div>
+
+            <!-- Laila Character SVG Avatar (Matching textbook girl with dark hair) -->
+            <div id="char1AvatarWrapper" class="w-28 h-32 sm:w-36 sm:h-40 transition-all duration-300">
+              <svg viewBox="0 0 120 140" class="w-full h-full drop-shadow">
+                <!-- Hair back -->
+                <ellipse cx="60" cy="55" rx="38" ry="46" fill="#1e293b"/>
+                <!-- Neck & Shoulders -->
+                <rect x="52" y="85" width="16" height="20" fill="#fed7aa"/>
+                <path d="M25 105 Q60 95 95 105 L105 140 L15 140 Z" fill="#ef4444"/>
+                <!-- Face -->
+                <ellipse cx="60" cy="62" rx="26" ry="30" fill="#fde68a"/>
+                <ellipse cx="60" cy="62" rx="24" ry="28" fill="#fed7aa"/>
+                <!-- Eyes -->
+                <ellipse cx="50" cy="60" rx="4" ry="5.5" fill="#1e293b"/>
+                <ellipse cx="70" cy="60" rx="4" ry="5.5" fill="#1e293b"/>
+                <circle cx="52" cy="58" r="1.5" fill="#ffffff"/>
+                <circle cx="72" cy="58" r="1.5" fill="#ffffff"/>
+                <!-- Eyebrows -->
+                <path d="M44 51 Q50 48 56 51" stroke="#334155" stroke-width="2" fill="none"/>
+                <path d="M64 51 Q70 48 76 51" stroke="#334155" stroke-width="2" fill="none"/>
+                <!-- Smile -->
+                <path d="M52 74 Q60 82 68 74" stroke="#9a3412" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <!-- Hand to chin gesture (Thinking) -->
+                <path d="M42 98 Q50 82 52 78" stroke="#fed7aa" stroke-width="8" stroke-linecap="round"/>
+                <!-- Front Bangs -->
+                <path d="M34 45 Q60 30 86 45 Q75 35 60 35 Q45 35 34 45 Z" fill="#1e293b"/>
+              </svg>
+            </div>
+            
+            <span class="text-xs font-bold text-slate-500 mt-2 font-english">Tap to Ask (انقر لطرح السؤال)</span>
+
+          </div>
+
+          <!-- Character 2: Sarah (Blonde hair, smiling/answering) - Right -->
+          <div class="md:col-span-6 flex flex-col items-center p-4 rounded-3xl bg-gradient-to-b from-purple-50/50 to-white border-2 border-purple-200 transition-all duration-300" id="charCard2">
+            
+            <!-- Character Badge & Audio Trigger -->
+            <div class="w-full flex items-center justify-between mb-3">
+              <span class="px-3 py-1 rounded-full bg-purple-600 text-white font-english font-black text-xs flex items-center gap-1.5 shadow-2xs">
+                <span>👱‍♀️</span>
+                <span>Sarah (الشخصية 2 - تجيب)</span>
+              </span>
+              <button onclick="speakRoleplaySpeaker(2)" class="px-3 py-1 bg-purple-100 hover:bg-purple-200 text-purple-800 rounded-xl text-xs font-black transition flex items-center gap-1 active:scale-95">
+                <span>🔊</span>
+                <span>أجب</span>
+              </button>
+            </div>
+
+            <!-- Speech Bubble for Character 2 -->
+            <div onclick="speakRoleplaySpeaker(2)" id="charBubble2" class="w-full min-h-[135px] flex flex-col justify-center items-center text-center cursor-pointer p-4 sm:p-5 rounded-[26px] modern-bubble-sarah mb-4 relative bubble-tail-bottom font-english group">
+              <p id="char2AnswerText" class="text-sm sm:text-base font-black text-slate-800 leading-relaxed text-center w-full max-w-sm mx-auto">
+                "My birthday is in October. And yours?"
+              </p>
+              <div class="mt-2 inline-flex items-center justify-center">
+                <span id="char2AnswerAr" class="text-[11px] sm:text-xs font-bold text-purple-800 arabic-trans-box bg-purple-100/70 px-3 py-0.5 rounded-full border border-purple-200/60" dir="rtl">
+                  "يصادف عيد ميلادي في شهر أكتوبر. وماذا عنكِ؟"
+                </span>
+              </div>
+            </div>
+
+            <!-- Sarah Character SVG Avatar (Matching textbook girl with blonde hair) -->
+            <div id="char2AvatarWrapper" class="w-28 h-32 sm:w-36 sm:h-40 transition-all duration-300">
+              <svg viewBox="0 0 120 140" class="w-full h-full drop-shadow">
+                <!-- Blonde Hair back -->
+                <ellipse cx="60" cy="55" rx="40" ry="50" fill="#facc15"/>
+                <!-- Neck & Shoulders -->
+                <rect x="52" y="85" width="16" height="20" fill="#fed7aa"/>
+                <path d="M25 105 Q60 95 95 105 L105 140 L15 140 Z" fill="#94a3b8"/>
+                <!-- Face -->
+                <ellipse cx="60" cy="62" rx="25" ry="29" fill="#fde68a"/>
+                <ellipse cx="60" cy="62" rx="23" ry="27" fill="#fed7aa"/>
+                <!-- Eyes (Blue) -->
+                <ellipse cx="50" cy="60" rx="4" ry="5" fill="#0284c7"/>
+                <ellipse cx="70" cy="60" rx="4" ry="5" fill="#0284c7"/>
+                <circle cx="52" cy="58" r="1.5" fill="#ffffff"/>
+                <circle cx="72" cy="58" r="1.5" fill="#ffffff"/>
+                <!-- Eyebrows -->
+                <path d="M44 51 Q50 48 56 51" stroke="#ca8a04" stroke-width="2" fill="none"/>
+                <path d="M64 51 Q70 48 76 51" stroke="#ca8a04" stroke-width="2" fill="none"/>
+                <!-- Big Happy Smile -->
+                <path d="M50 72 Q60 84 70 72 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="1.5"/>
+                <path d="M52 73 Q60 76 68 73" fill="#ffffff"/>
+                <!-- Blonde Front bangs -->
+                <path d="M30 46 Q60 28 90 46 Q75 32 60 32 Q45 32 30 46 Z" fill="#facc15"/>
+                <path d="M24 60 Q26 95 32 110" stroke="#facc15" stroke-width="8" stroke-linecap="round" fill="none"/>
+                <path d="M96 60 Q94 95 88 110" stroke="#facc15" stroke-width="8" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
+
+            <span class="text-xs font-bold text-slate-500 mt-2 font-english">Tap to Answer (انقر للإجابة)</span>
+
+          </div>
+
+        </div>
+
+        <!-- Roleplay Action Controls -->
+        <div class="mt-6 pt-4 border-t border-indigo-100 flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-2">
+            <!-- Play full dialogue sequence -->
+            <button onclick="playRoleplayConversationSequence()" id="playConversationBtn" class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-xs font-black shadow-md transition active:scale-95 flex items-center gap-1.5">
+              <span>▶️</span>
+              <span>تشغيل المحادثة الثنائية كاملة</span>
+            </button>
+            <!-- Next Question -->
+            <button onclick="nextRoleplayQuestion()" class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-xs font-black transition active:scale-95 flex items-center gap-1">
+              <span>السؤال التالي</span>
+              <span>⏭️</span>
+            </button>
+          </div>
+
+          <div class="text-xs font-bold text-slate-600" dir="rtl">
+            🎭 <span class="text-indigo-800 font-black">تبادل الأدوار:</span> يمكنك تجربة لعب دور السائل أو المجيب بالضغط على اسم الشخصية أو فقاعتها.
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- FOOTER (PAGE 7, LETTER W & SAUDI MINISTRY LOGO) -->
+    <div class="flex items-center justify-between pt-6 border-t-2 border-slate-100 text-slate-500">
+      <div class="flex items-center gap-3">
+        <!-- Ministry of Education Logo Mock -->
+        <div class="flex items-center gap-2 text-[11px] font-bold text-slate-600" dir="ltr">
+          <div class="w-8 h-8 rounded-full bg-teal-700 text-white flex items-center justify-center font-black text-xs">
+            🇸🇦
+          </div>
+          <div>
+            <div class="font-black text-teal-800 text-xs">وزارة التعليم</div>
+            <div class="text-[9px] text-slate-400">Ministry of Education 2026 - 1448</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Page Number 7 Pill -->
+        <div class="px-3 py-1 rounded-full bg-teal-600 text-white font-english font-black text-sm">
+          7
+        </div>
+        <!-- Letter W Circle Icon -->
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-700 to-indigo-600 text-white font-english font-black text-xl flex items-center justify-center shadow-md">
+          W
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- NOTIFICATION TOAST -->
+  <div id="toastNotification" class="fixed bottom-6 right-6 transform translate-y-28 opacity-0 transition-all duration-300 z-50 bg-slate-900/95 backdrop-blur-md text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/20 pointer-events-none" dir="ltr">
+    <span id="toastIcon" class="text-2xl">✨</span>
+    <div>
+      <div id="toastTitle" class="font-english font-extrabold text-sm text-sky-300">Welcome! Page 7</div>
+      <div id="toastMsg" class="font-semibold text-xs text-slate-200">Worksheet Ready!</div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================================
+       DATA DEFINITIONS
+       ========================================================================= */
+
+    // Activity 4: Word Bank and Correct Slot Solutions
+    const STORY_SLOT_SOLUTIONS = {
+      2: "time",
+      3: "calendar",
+      4: "late",
+      5: "one",
+      6: "early",
+      7: "months",
+      8: "How long"
+    };
+
+    const WORD_BANK_ITEMS = [
+      { id: "w_ago", word: "Ago", isExample: true, color: "bg-teal-500", border: "border-teal-600" },
+      { id: "w_calendar", word: "calendar", isExample: false, color: "bg-teal-600", border: "border-teal-700" },
+      { id: "w_early", word: "early", isExample: false, color: "bg-lime-600", border: "border-lime-700" },
+      { id: "w_howlong", word: "How long", isExample: false, color: "bg-amber-500", border: "border-amber-600" },
+      { id: "w_late", word: "late", isExample: false, color: "bg-rose-500", border: "border-rose-600" },
+      { id: "w_months", word: "months", isExample: false, color: "bg-purple-600", border: "border-purple-700" },
+      { id: "w_one", word: "one", isExample: false, color: "bg-sky-600", border: "border-sky-700" },
+      { id: "w_time", word: "time", isExample: false, color: "bg-slate-600", border: "border-slate-700" }
+    ];
+
+    let currentStoryPlacements = {};
+    let selectedWordChip = null;
+
+    // Activity 5: Math solutions and dialogue prompts
+    const MATH_DATA = {
+      1: {
+        eq: "130 + 26",
+        words: "one hundred fifty-six",
+        qPrompt: "What is one hundred thirty plus twenty-six?",
+        aPrompt: "I think it's one hundred fifty-six."
+      },
+      2: {
+        eq: "300 + 250",
+        words: "five hundred fifty",
+        qPrompt: "What is three hundred plus two hundred fifty?",
+        aPrompt: "I think it's five hundred fifty."
+      },
+      3: {
+        eq: "450 + 220",
+        words: "six hundred seventy",
+        qPrompt: "What is four hundred fifty plus two hundred twenty?",
+        aPrompt: "I think it's six hundred seventy."
+      },
+      4: {
+        eq: "500 + 500",
+        words: "one thousand",
+        qPrompt: "What is five hundred plus five hundred?",
+        aPrompt: "I think it's one thousand."
+      },
+      5: {
+        eq: "270 + 230",
+        words: "five hundred",
+        qPrompt: "What is two hundred seventy plus two hundred thirty?",
+        aPrompt: "I think it's five hundred."
+      }
+    };
+
+    // Activity 6: 5 Roleplay Questions & Dialogues
+    const ROLEPLAY_QUESTIONS = {
+      1: {
+        tab: "Q1: Birthday 🎂",
+        qEn: "Which month is your birthday in?",
+        qAr: "في أي شهر يصادف عيد ميلادك؟",
+        aEn: "My birthday is in October. And yours?",
+        aAr: "يصادف عيد ميلادي في شهر أكتوبر. وماذا عنكِ؟"
+      },
+      2: {
+        tab: "Q2: June ☀️",
+        qEn: "Do you do anything special in June? If so, what?",
+        qAr: "هل تفعلين شيئاً مميزاً في شهر يونيو؟ وما هو؟",
+        aEn: "Yes! In June, school ends and we travel for summer vacation!",
+        aAr: "نعم! في يونيو تنتهي المدرسة ونسافر لقضاء العطلة الصيفية!"
+      },
+      3: {
+        tab: "Q3: Hottest Month 🔥",
+        qEn: "What is the hottest month in your country?",
+        qAr: "ما هو أشد شهور السنة حرارة في بلدك؟",
+        aEn: "July and August are definitely the hottest months in my country.",
+        aAr: "شهرا يوليو وأغسطس هما بلا شك أشد الشهور حرارة في بلدي."
+      },
+      4: {
+        tab: "Q4: Favorite Month 🌟",
+        qEn: "Which is your favorite month? Why?",
+        qAr: "أي شهر هو المفضل لديكِ ولماذا؟",
+        aEn: "My favorite month is December because the weather is cool and pleasant!",
+        aAr: "شهري المفضل هو ديسمبر لأن الطقس يكون بارداً ولطيفاً جداً!"
+      },
+      5: {
+        tab: "Q5: National Holidays 🇸🇦",
+        qEn: "Which months have national holidays in your country and what are they?",
+        qAr: "أي الشهور تضم مناسبات وطنية في بلدك وما هي؟",
+        aEn: "September has National Day on September 23rd, and February has Founding Day!",
+        aAr: "شهر سبتمبر يضم اليوم الوطني في 23 سبتمبر، وفبراير يضم يوم التأسيس!"
+      }
+    };
+
+    let currentRoleplayIndex = 1;
+
+    /* =========================================================================
+       AUDIO SYNTHESIS & SOUND FX
+       ========================================================================= */
+
+    class SoundEffects {
+      constructor() { this.ctx = null; }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      beep(freq, type = 'sine', duration = 0.12, gainVal = 0.15) {
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch (e) {}
+      }
+      playPop() { this.beep(520, 'sine', 0.08, 0.15); }
+      playSuccess() {
+        this.beep(523.25, 'triangle', 0.12, 0.25);
+        setTimeout(() => this.beep(659.25, 'triangle', 0.14, 0.25), 90);
+        setTimeout(() => this.beep(783.99, 'triangle', 0.2, 0.3), 180);
+      }
+      playWrong() {
+        this.beep(293.66, 'sawtooth', 0.15, 0.2);
+        setTimeout(() => this.beep(220.00, 'sawtooth', 0.22, 0.22), 120);
+      }
+    }
+    const sfx = new SoundEffects();
+
+    // Canadian Voice Engine
+    const speechEngine = {
+      voices: [],
+      rate: 0.82, // Calibrated to a calm, natural, well-paced educational speed (قراءة عادية معتدلة غير متسرعة)
+      pitch: 1.04,
+      activeVoice: null,
+      init() {
+        if ('speechSynthesis' in window) {
+          const load = () => {
+            this.voices = window.speechSynthesis.getVoices();
+            this.activeVoice = this.getCanadianFemaleVoice();
+          };
+          load();
+          if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = load;
+          }
+        }
+      },
+      getCanadianFemaleVoice() {
+        if (!this.voices || this.voices.length === 0) {
+          this.voices = window.speechSynthesis.getVoices();
+        }
+        if (!this.voices || this.voices.length === 0) return null;
+
+        // 1. Explicit Canadian English (en-CA)
+        const caVoices = this.voices.filter(v =>
+          v.lang === 'en-CA' || v.lang === 'en_CA' || v.lang.toLowerCase().replace('_', '-').startsWith('en-ca')
+        );
+        const femaleKeywords = ['female', 'linda', 'clara', 'samantha', 'amelie', 'heather', 'karen', 'victoria', 'natural'];
+        const caFemale = caVoices.find(v => femaleKeywords.some(fn => v.name.toLowerCase().includes(fn)));
+        if (caFemale) return caFemale;
+        if (caVoices.length > 0) return caVoices[0];
+
+        // 2. High-quality North American Natural Female
+        const naVoices = this.voices.filter(v => v.lang.startsWith('en-US') || v.lang.startsWith('en_US'));
+        const naFemale = naVoices.find(v => femaleKeywords.some(fn => v.name.toLowerCase().includes(fn)));
+        if (naFemale) return naFemale;
+
+        // 3. Any English female fallback
+        return this.voices.find(v => v.lang.startsWith('en')) || null;
+      },
+      speak(text, onStart, onEnd) {
+        if (!('speechSynthesis' in window)) {
+          if (onEnd) onEnd();
+          return;
+        }
+        window.speechSynthesis.cancel();
+        if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'en-CA';
+        utter.rate = this.rate;
+        utter.pitch = this.pitch;
+        utter.volume = 1.0;
+
+        const voice = this.getCanadianFemaleVoice();
+        if (voice) utter.voice = voice;
+
+        let finished = false;
+        const finalize = () => {
+          if (!finished) {
+            finished = true;
+            if (onEnd) onEnd();
+          }
+        };
+
+        utter.onstart = () => { if (onStart) onStart(); };
+        utter.onend = finalize;
+        utter.onerror = finalize;
+
+        window._curUtter = utter;
+        window.speechSynthesis.speak(utter);
+      }
+    };
+
+    /* =========================================================================
+       KARAOKE ENGINE (AUDIO-TO-TEXT WORD SYNCHRONIZATION)
+       ========================================================================= */
+
+    const playerState = {
+      isPlaying: false,
+      isPaused: false,
+      speed: 0.82, // Default: natural, comfortable speed
+      currentSentence: null,
+      timerInterval: null,
+      elapsedSeconds: 0,
+      totalEstimatedSeconds: 38
+    };
+
+    const karaokeEngine = {
+      activeSpans: [],
+      currentIndex: -1,
+      timer: null,
+      keepAliveInterval: null,
+      tokens: [],
+
+      clearHighlights() {
+        if (this.timer) {
+          clearInterval(this.timer);
+          this.timer = null;
+        }
+        if (this.keepAliveInterval) {
+          clearInterval(this.keepAliveInterval);
+          this.keepAliveInterval = null;
+        }
+        this.activeSpans.forEach(span => {
+          if (span) span.classList.remove('k-active', 'k-passed');
+        });
+        document.querySelectorAll('.sentence-row').forEach(row => {
+          row.classList.remove('active-sentence');
+        });
+        this.activeSpans = [];
+        this.tokens = [];
+        this.currentIndex = -1;
+      },
+
+      highlightIndex(idx) {
+        if (idx < 0 || idx >= this.tokens.length || idx === this.currentIndex) return;
+        this.currentIndex = idx;
+
+        for (let i = 0; i < this.tokens.length; i++) {
+          const span = this.tokens[i].span;
+          if (!span) continue;
+
+          if (i < idx) {
+            span.classList.remove('k-active');
+            span.classList.add('k-passed');
+          } else if (i === idx) {
+            span.classList.remove('k-passed');
+            span.classList.add('k-active');
+
+            // Highlight the sentence row currently being read
+            const sentRow = span.closest('.sentence-row');
+            if (sentRow && !sentRow.classList.contains('active-sentence')) {
+              document.querySelectorAll('.sentence-row').forEach(r => r.classList.remove('active-sentence'));
+              sentRow.classList.add('active-sentence');
+            }
+          } else {
+            span.classList.remove('k-active', 'k-passed');
+          }
+        }
+      },
+
+      findTokenIndex(charIdx, tokens) {
+        if (!tokens || tokens.length === 0) return -1;
+        if (charIdx <= tokens[0].charStart) return 0;
+        if (charIdx >= tokens[tokens.length - 1].charStart) return tokens.length - 1;
+
+        for (let i = 0; i < tokens.length - 1; i++) {
+          if (charIdx >= tokens[i].charStart && charIdx < tokens[i + 1].charStart) {
+            return i;
+          }
+        }
+        return tokens.length - 1;
+      },
+
+      speakWithKaraoke(containerElement, customSpokenText, options = {}) {
+        this.clearHighlights();
+
+        if (!('speechSynthesis' in window)) {
+          if (options.onEnd) options.onEnd();
+          return;
+        }
+
+        window.speechSynthesis.cancel();
+        if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+
+        // Collect all .k-word spans inside the target container
+        const spans = Array.from(containerElement.querySelectorAll('.k-word'));
+        if (spans.length === 0) {
+          speechEngine.speak(customSpokenText || containerElement.innerText, options.onStart, options.onEnd);
+          return;
+        }
+
+        const tokensList = [];
+        spans.forEach(span => {
+          const slotNum = span.getAttribute('data-k-slot');
+          let rawText = "";
+          if (slotNum) {
+            rawText = currentStoryPlacements[slotNum] || STORY_SLOT_SOLUTIONS[slotNum] || "word";
+          } else {
+            rawText = span.getAttribute('data-k-text') || span.textContent.trim();
+          }
+          const words = rawText.replace(/[^a-zA-Z0-9']/g, ' ').split(/\s+/).filter(Boolean);
+          words.forEach(w => {
+            tokensList.push({ word: w, span: span });
+          });
+        });
+
+        this.tokens = tokensList;
+        this.activeSpans = spans;
+
+        const fullUtteranceText = customSpokenText || tokensList.map(t => t.word).join(' ');
+
+        // Compute exact character boundaries for each word in the spoken text
+        const regex = /[a-zA-Z0-9']+/g;
+        let match;
+        let matchIdx = 0;
+        while ((match = regex.exec(fullUtteranceText)) !== null && matchIdx < tokensList.length) {
+          tokensList[matchIdx].charStart = match.index;
+          tokensList[matchIdx].charEnd = match.index + match[0].length;
+          matchIdx++;
+        }
+
+        for (let i = 0; i < tokensList.length; i++) {
+          if (tokensList[i].charStart === undefined) {
+            const prev = i > 0 ? tokensList[i - 1].charEnd + 1 : 0;
+            tokensList[i].charStart = prev;
+            tokensList[i].charEnd = prev + tokensList[i].word.length;
+          }
+        }
+
+        const utter = new SpeechSynthesisUtterance(fullUtteranceText);
+        utter.lang = 'en-CA';
+        utter.rate = options.rate || playerState.speed || 0.82;
+        utter.pitch = 1.04;
+        utter.volume = 1.0;
+
+        const caVoice = speechEngine.getCanadianFemaleVoice();
+        if (caVoice) utter.voice = caVoice;
+
+        let boundaryFired = false;
+
+        // Accurate boundary tracking
+        utter.onboundary = (e) => {
+          if (e.name === 'word' || !e.name || e.name === '') {
+            boundaryFired = true;
+            const idx = this.findTokenIndex(e.charIndex, tokensList);
+            if (idx !== -1) {
+              this.highlightIndex(idx);
+            }
+          }
+        };
+
+        utter.onstart = () => {
+          this.highlightIndex(0);
+          if (options.onStart) options.onStart();
+
+          // Keep-alive loop to prevent browser speech interruption on longer passages
+          this.keepAliveInterval = setInterval(() => {
+            if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+              window.speechSynthesis.pause();
+              window.speechSynthesis.resume();
+            }
+          }, 10000);
+
+          // Adaptive fallback in case the browser does not trigger onboundary events
+          const wordCount = tokensList.length;
+          const msPerWord = Math.max(260, Math.round(580 / utter.rate));
+          let currentStep = 0;
+          this.timer = setInterval(() => {
+            if (!boundaryFired && currentStep < wordCount) {
+              this.highlightIndex(currentStep);
+              currentStep++;
+            }
+          }, msPerWord);
+        };
+
+        const finalize = () => {
+          this.clearHighlights();
+          if (options.onEnd) options.onEnd();
+        };
+
+        utter.onend = finalize;
+        utter.onerror = finalize;
+
+        window._curKaraokeUtter = utter;
+        window.speechSynthesis.speak(utter);
+      },
+
+      speakTokensWithKaraoke(containerElement, tokensList, customSpokenText, options = {}) {
+        return this.speakWithKaraoke(containerElement, customSpokenText, options);
+      }
+    };
+
+    function getSlotWord(slotNum) {
+      return currentStoryPlacements[slotNum] || STORY_SLOT_SOLUTIONS[slotNum] || "word";
+    }
+
+    function getPunctuatedStoryText() {
+      return [
+        "Some Time Ago, at School.",
+        `I asked my classmate, Sebastian, how much ${getSlotWord(2)} we had until the bell rang. He checked the ${getSlotWord(3)} on the wall.`,
+        `He said we needed to hurry up, or we would be ${getSlotWord(4)} for class again! Just then, the bell rang. "Oh, no! It's ${getSlotWord(5)} o'clock already."`,
+        `We really needed to arrive ${getSlotWord(6)} this time. A few ${getSlotWord(7)} ago, we weren't on time, and the teacher got mad.`,
+        `"${getSlotWord(8)} does it take to get to class?" I asked Sebastian. "Not long!" he answered. "Hurry up!"`
+      ];
+    }
+
+    function buildPassageTokens(containerSelector) {
+      const container = document.querySelector(containerSelector || '#storyPassageContainer');
+      if (!container) return { tokens: [], fullText: "" };
+
+      const spans = Array.from(container.querySelectorAll('.k-word'));
+      const tokens = [];
+
+      spans.forEach((span, spanIdx) => {
+        const slotNum = span.getAttribute('data-k-slot');
+        let rawText = "";
+
+        if (slotNum) {
+          rawText = currentStoryPlacements[slotNum] || STORY_SLOT_SOLUTIONS[slotNum] || "word";
+        } else {
+          rawText = span.getAttribute('data-k-text') || span.textContent.trim();
+        }
+
+        const cleaned = rawText.replace(/[.,!?"']/g, ' ').trim();
+        const words = cleaned.split(/\s+/).filter(Boolean);
+
+        words.forEach(w => {
+          tokens.push({
+            word: w,
+            spanIndex: spanIdx,
+            span: span
+          });
+        });
+      });
+
+      const punctuatedSentences = getPunctuatedStoryText();
+      let fullText = "";
+      if (containerSelector && containerSelector.includes('sent-row-')) {
+        const matchRow = containerSelector.match(/sent-row-(\d+)/);
+        const rowIdx = matchRow ? parseInt(matchRow[1], 10) : 0;
+        fullText = punctuatedSentences[rowIdx] || tokens.map(t => t.word).join(' ');
+      } else {
+        fullText = punctuatedSentences.join(' ');
+      }
+
+      return { tokens, fullText };
+    }
+
+    function toggleStoryAudioPlayback() {
+      if (playerState.isPlaying) {
+        if (playerState.isPaused) {
+          if ('speechSynthesis' in window) window.speechSynthesis.resume();
+          playerState.isPaused = false;
+          updatePlayerUI(true, false);
+          startPlayerTimer();
+        } else {
+          if ('speechSynthesis' in window) window.speechSynthesis.pause();
+          playerState.isPaused = true;
+          updatePlayerUI(true, true);
+          clearInterval(playerState.timerInterval);
+        }
+      } else {
+        startFullPassageAudio();
+      }
+    }
+
+    function startFullPassageAudio() {
+      stopStoryAudioPlayback(false);
+
+      const { tokens, fullText } = buildPassageTokens('#storyPassageContainer');
+      if (tokens.length === 0) return;
+
+      playerState.isPlaying = true;
+      playerState.isPaused = false;
+      playerState.elapsedSeconds = 0;
+      playerState.totalEstimatedSeconds = Math.round((tokens.length * 0.52) / playerState.speed) + 4;
+
+      updatePlayerUI(true, false);
+      startPlayerTimer();
+
+      const card = document.getElementById('storyTextCard');
+      const sebImg = document.getElementById('sebastianImgWrapper');
+
+      document.getElementById('playerActiveSentenceLabel').textContent = "جارٍ تشغيل القطعة بقراءة عادية هادئة...";
+
+      karaokeEngine.speakWithKaraoke(document.getElementById('storyPassageContainer'), fullText, {
+        rate: playerState.speed,
+        onStart: () => {
+          if (card) card.classList.add('sync-active-glow');
+          if (sebImg) sebImg.classList.add('sync-char-active');
+        },
+        onEnd: () => {
+          stopStoryAudioPlayback(true);
+        }
+      });
+    }
+
+    function playSpecificSentence(sentIndex) {
+      stopStoryAudioPlayback(false);
+
+      const targetRow = document.getElementById(`sent-row-${sentIndex}`);
+      if (!targetRow) return;
+
+      const { tokens, fullText } = buildPassageTokens(`#sent-row-${sentIndex}`);
+      if (tokens.length === 0) return;
+
+      playerState.isPlaying = true;
+      playerState.isPaused = false;
+      playerState.elapsedSeconds = 0;
+      playerState.totalEstimatedSeconds = Math.round((tokens.length * 0.52) / playerState.speed) + 2;
+
+      updatePlayerUI(true, false);
+      startPlayerTimer();
+
+      const labelMap = {
+        0: "العنوان: Some Time Ago, at School",
+        1: "الجملة 1: I asked my classmate...",
+        2: "الجملة 2: He said we needed to hurry...",
+        3: "الجملة 3: We really needed to arrive...",
+        4: "الجملة 4: How long does it take..."
+      };
+      document.getElementById('playerActiveSentenceLabel').textContent = labelMap[sentIndex] || "استماع للجملة";
+
+      karaokeEngine.speakWithKaraoke(targetRow, fullText, {
+        rate: playerState.speed,
+        onStart: () => {
+          targetRow.classList.add('active-sentence');
+        },
+        onEnd: () => {
+          targetRow.classList.remove('active-sentence');
+          stopStoryAudioPlayback(true);
+        }
+      });
+    }
+
+    function replayStoryAudioFromStart() {
+      sfx.playPop();
+      startFullPassageAudio();
+    }
+
+    function stopStoryAudioPlayback(isCompleted = false) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      karaokeEngine.clearHighlights();
+
+      playerState.isPlaying = false;
+      playerState.isPaused = false;
+      clearInterval(playerState.timerInterval);
+
+      if (isCompleted) {
+        playerState.elapsedSeconds = playerState.totalEstimatedSeconds;
+        setProgressPercent(100);
+        document.getElementById('playerActiveSentenceLabel').textContent = "اكتمل الاستماع بنجاح 🌟";
+      } else {
+        playerState.elapsedSeconds = 0;
+        setProgressPercent(0);
+        document.getElementById('playerActiveSentenceLabel').textContent = "جاهز للتشغيل (قراءة عادية)";
+      }
+
+      updatePlayerUI(false, false);
+
+      const card = document.getElementById('storyTextCard');
+      if (card) card.classList.remove('sync-active-glow');
+      const sebImg = document.getElementById('sebastianImgWrapper');
+      if (sebImg) sebImg.classList.remove('sync-char-active');
+    }
+
+    function setPlayerPlaybackSpeed(speed) {
+      sfx.playPop();
+      playerState.speed = speed;
+
+      [0.72, 0.82, 0.95].forEach((sp, idx) => {
+        const id = ['spdBtn-08', 'spdBtn-10', 'spdBtn-12'][idx];
+        const btn = document.getElementById(id);
+        if (btn) {
+          if (sp === speed) {
+            btn.className = "px-2.5 py-1 rounded-lg bg-white/25 text-amber-200 font-black shadow-xs transition";
+          } else {
+            btn.className = "px-2 py-1 rounded-lg text-teal-100 hover:text-white transition";
+          }
+        }
+      });
+
+      const labelSpeed = speed === 0.82 ? "العادية الطبيعية ✨" : (speed < 0.82 ? "الهادئة المتأنية 🐢" : "السريعة ⚡");
+      showToast("سرعة الصوت", `تم ضبط السرعة إلى القراءة ${labelSpeed}`, "🎙️");
+
+      if (playerState.isPlaying && !playerState.isPaused) {
+        startFullPassageAudio();
+      }
+    }
+
+    function handleSeekProgress(e) {
+      const rail = document.getElementById('audioProgressRail');
+      const rect = rail.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+
+      setProgressPercent(pct * 100);
+      playerState.elapsedSeconds = Math.round(pct * playerState.totalEstimatedSeconds);
+      updateTimeDisplay();
+
+      // Jump to roughly proportional sentence
+      if (pct < 0.15) playSpecificSentence(0);
+      else if (pct < 0.40) playSpecificSentence(1);
+      else if (pct < 0.65) playSpecificSentence(2);
+      else if (pct < 0.85) playSpecificSentence(3);
+      else playSpecificSentence(4);
+    }
+
+    function setProgressPercent(pct) {
+      const fill = document.getElementById('audioProgressFill');
+      if (fill) fill.style.width = `${pct}%`;
+    }
+
+    function startPlayerTimer() {
+      clearInterval(playerState.timerInterval);
+      updateTimeDisplay();
+
+      playerState.timerInterval = setInterval(() => {
+        if (!playerState.isPaused) {
+          playerState.elapsedSeconds++;
+          const pct = Math.min(100, (playerState.elapsedSeconds / playerState.totalEstimatedSeconds) * 100);
+          setProgressPercent(pct);
+          updateTimeDisplay();
+
+          if (playerState.elapsedSeconds >= playerState.totalEstimatedSeconds) {
+            clearInterval(playerState.timerInterval);
+          }
+        }
+      }, 1000);
+    }
+
+    function updateTimeDisplay() {
+      const formatSec = (sec) => {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+      };
+
+      const curEl = document.getElementById('playerCurrentTime');
+      const totEl = document.getElementById('playerTotalTime');
+      if (curEl) curEl.textContent = formatSec(playerState.elapsedSeconds);
+      if (totEl) totEl.textContent = formatSec(playerState.totalEstimatedSeconds);
+    }
+
+    function updatePlayerUI(isPlaying, isPaused) {
+      const playBtn = document.getElementById('mainPlayPauseBtn');
+      const icon = document.getElementById('mainPlayIcon');
+      const label = document.getElementById('mainPlayLabel');
+      const wave = document.getElementById('playerWaveBars');
+
+      if (isPlaying) {
+        if (isPaused) {
+          icon.textContent = '▶️';
+          label.textContent = 'استئناف المقطع';
+          if (wave) wave.classList.remove('player-wave-active');
+        } else {
+          icon.textContent = '⏸️';
+          label.textContent = 'إيقاف مؤقت';
+          if (wave) wave.classList.add('player-wave-active');
+        }
+      } else {
+        icon.textContent = '▶️';
+        label.textContent = 'تشغيل المقطع الصوتي';
+        if (wave) wave.classList.remove('player-wave-active');
+      }
+    }
+
+    /* Backward compatibility helper for header play button */
+    function playFullStoryAudio() {
+      toggleStoryAudioPlayback();
+    }
+
+    /* =========================================================================
+       SECTION 4: DRAG & DROP / CLICK-TO-PLACE STORY LOGIC
+       ========================================================================= */
+
+    function renderWordBank() {
+      const container = document.getElementById('wordBankContainer');
+      container.innerHTML = '';
+
+      WORD_BANK_ITEMS.forEach(item => {
+        const isPlaced = Object.values(currentStoryPlacements).includes(item.word);
+        const isSelected = selectedWordChip === item.word;
+
+        const chip = document.createElement('div');
+        chip.id = `chip-${item.id}`;
+        chip.draggable = !item.isExample && !isPlaced;
+
+        chip.className = `word-chip px-3.5 py-1.5 rounded-full text-white font-black text-xs sm:text-sm border-2 shadow-xs transition-all flex items-center gap-1.5 ${item.color} ${item.border} ${
+          item.isExample || isPlaced ? 'opacity-40 line-through cursor-not-allowed scale-95' : 'hover:scale-105 active:scale-95'
+        } ${isSelected ? 'word-chip-selected' : ''}`;
+
+        chip.innerHTML = `
+          <span>${item.word}</span>
+          ${item.isExample ? '<span class="text-[10px] bg-white/20 px-1 rounded">مثال</span>' : ''}
+        `;
+
+        if (!item.isExample && !isPlaced) {
+          // HTML5 Drag
+          chip.ondragstart = (e) => handleDragStart(e, item.word);
+          // Touch / Click to select
+          chip.onclick = () => handleChipClick(item.word);
+        }
+
+        container.appendChild(chip);
+      });
+    }
+
+    function handleDragStart(e, word) {
+      e.dataTransfer.setData('text/plain', word);
+      selectedWordChip = word;
+      sfx.playPop();
+    }
+
+    function handleChipClick(word) {
+      sfx.playPop();
+      if (selectedWordChip === word) {
+        selectedWordChip = null;
+      } else {
+        selectedWordChip = word;
+        speechEngine.speak(word);
+      }
+      renderWordBank();
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.currentTarget.classList.add('drag-over');
+    }
+
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    function handleDrop(e, slotNum) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over');
+      const word = e.dataTransfer.getData('text/plain') || selectedWordChip;
+      if (word) {
+        placeWordInSlot(slotNum, word);
+      }
+    }
+
+    function handleSlotClick(slotNum) {
+      if (selectedWordChip) {
+        placeWordInSlot(slotNum, selectedWordChip);
+      } else if (currentStoryPlacements[slotNum]) {
+        // Remove placed word
+        sfx.playPop();
+        delete currentStoryPlacements[slotNum];
+        updateSlotDisplay(slotNum, null);
+        renderWordBank();
+        updateStoryScoreFeedback();
+      } else {
+        sfx.playPop();
+        showToast("اختر كلمة أولاً", "انقر على كلمة من صندوق الكلمات بالأعلى ثم انقر هنا لوضعها", "💡");
+      }
+    }
+
+    function placeWordInSlot(slotNum, word) {
+      sfx.playPop();
+      // Remove word if already placed in another slot
+      for (const k in currentStoryPlacements) {
+        if (currentStoryPlacements[k] === word) {
+          delete currentStoryPlacements[k];
+          updateSlotDisplay(k, null);
+        }
+      }
+
+      currentStoryPlacements[slotNum] = word;
+      selectedWordChip = null;
+      updateSlotDisplay(slotNum, word);
+      renderWordBank();
+      updateStoryScoreFeedback();
+    }
+
+    function updateSlotDisplay(slotNum, word) {
+      const slot = document.querySelector(`.drop-slot[data-slot="${slotNum}"]`);
+      if (!slot) return;
+
+      if (word) {
+        slot.innerHTML = `<span class="slot-text text-sky-900 font-black text-sm sm:text-base underline">${slotNum}. ${word}</span>`;
+        slot.classList.add('bg-sky-100', 'border-sky-500');
+        slot.classList.remove('border-dashed');
+      } else {
+        const defaultPlaceholders = {
+          2: '² [.........]',
+          3: '³ [.........]',
+          4: '⁴ [.........]',
+          5: '⁵ [.........]',
+          6: '⁶ [.........]',
+          7: '⁷ [.........]',
+          8: '⁸ [.........]'
+        };
+        slot.innerHTML = `<span class="slot-text text-slate-400 text-xs">${defaultPlaceholders[slotNum]}</span>`;
+        slot.classList.remove('bg-sky-100', 'border-sky-500', 'border-emerald-500', 'bg-emerald-50', 'border-rose-400', 'bg-rose-50');
+        slot.classList.add('border-dashed');
+      }
+    }
+
+    function checkStoryAnswers() {
+      sfx.playPop();
+      let correctCount = 0;
+
+      for (let slot = 2; slot <= 8; slot++) {
+        const slotEl = document.querySelector(`.drop-slot[data-slot="${slot}"]`);
+        const userWord = currentStoryPlacements[slot];
+        const correctWord = STORY_SLOT_SOLUTIONS[slot];
+
+        if (userWord && userWord.toLowerCase() === correctWord.toLowerCase()) {
+          correctCount++;
+          if (slotEl) {
+            slotEl.classList.remove('border-sky-500', 'bg-sky-100', 'border-rose-400', 'bg-rose-50');
+            slotEl.classList.add('border-emerald-500', 'bg-emerald-50');
+          }
+        } else {
+          if (slotEl) {
+            slotEl.classList.remove('border-sky-500', 'bg-sky-100', 'border-emerald-500', 'bg-emerald-50');
+            slotEl.classList.add('border-rose-400', 'bg-rose-50', 'animate-shake');
+            setTimeout(() => slotEl.classList.remove('animate-shake'), 400);
+          }
+        }
+      }
+
+      if (correctCount === 7) {
+        sfx.playSuccess();
+        fireConfetti(0.5);
+        showToast("إجابة مثالية! 🌟", "أكملت جميع فراغات القصة بشكل صحيح 100%!", "🏆");
+      } else {
+        sfx.playWrong();
+        showToast("تحقق من الإجابات", `حصلت على ${correctCount} من 7 فراغات صحيحة، راجع الكلمات باللون الأحمر!`, "⚠️");
+      }
+
+      updateStoryScoreFeedback();
+      updateMasterScore();
+    }
+
+    function updateStoryScoreFeedback() {
+      const placed = Object.keys(currentStoryPlacements).length;
+      document.getElementById('storyScoreFeedback').textContent = `تم ملء: ${placed} من 7 فراغات`;
+    }
+
+    function resetStorySlots() {
+      sfx.playPop();
+      currentStoryPlacements = {};
+      selectedWordChip = null;
+      for (let i = 2; i <= 8; i++) updateSlotDisplay(i, null);
+      renderWordBank();
+      updateStoryScoreFeedback();
+      updateMasterScore();
+      showToast("إعادة تعيين", "تم إفراغ القصة، يمكنك إعادة ترتيب الكلمات الآن", "🔄");
+    }
+
+    function playFullStoryAudio() {
+      const btn = document.getElementById('playStoryBtn');
+      const card = document.getElementById('storyTextCard');
+      const sebImg = document.getElementById('sebastianImgWrapper');
+      const storyBody = document.getElementById('storySpannedBody');
+      const ticker = document.getElementById('storyKaraokeTicker');
+      const currentWordTxt = document.getElementById('storyCurrentWord');
+
+      btn.disabled = true;
+      btn.classList.add('opacity-60');
+
+      // Build story text dynamically respecting user's placements or correct solution
+      const getSlotWord = (slotNum) => currentStoryPlacements[slotNum] || STORY_SLOT_SOLUTIONS[slotNum];
+
+      const fullStoryText = 
+        "Some Time Ago, at School. " +
+        `I asked my classmate, Sebastian, how much ${getSlotWord(2)} we had until the bell rang. ` +
+        `He checked the ${getSlotWord(3)} on the wall. ` +
+        `He said we needed to hurry up or we would be ${getSlotWord(4)} for class again! ` +
+        `Just then, the bell rang. Oh, no! It's ${getSlotWord(5)} o'clock already. ` +
+        `We really needed to arrive ${getSlotWord(6)} this time. ` +
+        `A few ${getSlotWord(7)} ago, we weren't on time and the teacher got mad. ` +
+        `"${getSlotWord(8)} does it take to get to class?" I asked Sebastian. ` +
+        `"Not long!" he answered. "Hurry up!"`;
+
+      karaokeEngine.speakWithKaraoke(storyBody, fullStoryText, {
+        tickerEl: ticker,
+        currentWordEl: currentWordTxt,
+        onStart: () => {
+          if (card) card.classList.add('sync-active-glow');
+          if (sebImg) sebImg.classList.add('sync-char-active');
+          showToast("Karaoke Synced! 🎙️", "استمع لتزامن الصوت بالكلمات كلمة بكلمة 🇨🇦", "✨");
+        },
+        onEnd: () => {
+          if (card) card.classList.remove('sync-active-glow');
+          if (sebImg) sebImg.classList.remove('sync-char-active');
+          btn.disabled = false;
+          btn.classList.remove('opacity-60');
+        }
+      });
+    }
+
+    /* =========================================================================
+       SECTION 5: MATH IN WORDS & AUDIO CHECK
+       ========================================================================= */
+
+    function validateMathDirect(num) {
+      const input = document.getElementById(`math-input-${num}`);
+      const val = input.value.trim().toLowerCase();
+      const target = MATH_DATA[num].words.toLowerCase();
+
+      if (val === target) {
+        input.classList.remove('border-rose-400', 'bg-rose-50');
+        input.classList.add('border-emerald-500', 'bg-emerald-50');
+      } else {
+        input.classList.remove('border-emerald-500', 'bg-emerald-50');
+      }
+      updateMasterScore();
+    }
+
+    function checkAllMathEquations() {
+      sfx.playPop();
+      let correct = 0;
+      for (let i = 2; i <= 5; i++) {
+        const input = document.getElementById(`math-input-${i}`);
+        const val = input.value.trim().toLowerCase();
+        if (val === MATH_DATA[i].words.toLowerCase()) {
+          correct++;
+          input.classList.add('border-emerald-500', 'bg-emerald-50');
+        } else {
+          input.classList.add('border-rose-400', 'bg-rose-50', 'animate-shake');
+          setTimeout(() => input.classList.remove('animate-shake'), 400);
+        }
+      }
+
+      document.getElementById('mathStatusText').textContent = `تم حل ${correct} من 4 مسائل`;
+      if (correct === 4) {
+        sfx.playSuccess();
+        fireConfetti(0.4);
+        showToast("Math Master! 🏆", "جميع إجابات المسائل الرياضية صحيحة!", "🔢");
+      } else {
+        sfx.playWrong();
+        showToast("حاول ثانية", "تأكد من كتابة الأرقام الإنجليزية بالحروف بدقة", "💡");
+      }
+      updateMasterScore();
+    }
+
+    function playMathAudio(num) {
+      const data = MATH_DATA[num];
+      if (!data) return;
+
+      const row = document.getElementById(`math-row-${num}`);
+      const input = document.getElementById(`math-input-${num}`);
+      
+      // If question 1 (given as book example) or the student has already typed an answer to check
+      if (num === 1 || (input && input.value.trim().length > 0)) {
+        const speechText = `${data.eq} equals ${data.words}`;
+        speechEngine.speak(speechText, () => {
+          if (row) row.classList.add('sync-active-glow');
+        }, () => {
+          if (row) row.classList.remove('sync-active-glow');
+        });
+      } else {
+        // Do NOT spoil the answer! Read only the question prompt so the student has to think and solve
+        speechEngine.speak(data.qPrompt, () => {
+          if (row) row.classList.add('sync-active-glow');
+        }, () => {
+          if (row) row.classList.remove('sync-active-glow');
+        });
+        showToast("فكّر واكتب الناتج أولاً ✏️", "استمعت للمسألة! اكتب الناتج بالحروف الإنجليزية بنفسك ثم استمع للتحقق", "💡");
+      }
+    }
+
+    function playAllMathSequentially() {
+      let idx = 1;
+      function next() {
+        if (idx <= 5) {
+          playMathAudio(idx);
+          idx++;
+          setTimeout(next, 3200);
+        }
+      }
+      next();
+    }
+
+    function playBubblePrompt(partnerNum) {
+      sfx.playPop();
+      const b1 = document.getElementById('mathPromptBubble1');
+      const b2 = document.getElementById('mathPromptBubble2');
+
+      if (partnerNum === 1) {
+        karaokeEngine.speakWithKaraoke(b1, "What is one hundred thirty plus twenty-six?", {
+          onStart: () => b1.classList.add('sync-active-glow'),
+          onEnd: () => b1.classList.remove('sync-active-glow')
+        });
+      } else {
+        karaokeEngine.speakWithKaraoke(b2, "I think it's one hundred fifty-six.", {
+          onStart: () => b2.classList.add('sync-active-glow'),
+          onEnd: () => b2.classList.remove('sync-active-glow')
+        });
+      }
+    }
+
+    /* =========================================================================
+       SECTION 6: TWO-CHARACTER INTERACTIVE ROLEPLAY GAME
+       ========================================================================= */
+
+    function renderRoleplaySpans(elementId, text) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const words = text.split(' ');
+      el.innerHTML = words.map(w => `<span class="k-word">${w}</span>`).join(' ');
+    }
+
+    function selectRoleplayQuestion(qNum) {
+      sfx.playPop();
+      currentRoleplayIndex = qNum;
+
+      // Update Tabs
+      for (let i = 1; i <= 5; i++) {
+        const tab = document.getElementById(`qtab-${i}`);
+        if (tab) {
+          if (i === qNum) {
+            tab.className = "roleplay-tab-btn p-2.5 rounded-2xl border-2 border-indigo-500 bg-indigo-600 text-white font-black text-xs sm:text-sm shadow-xs transition active:scale-95 text-center";
+          } else {
+            tab.className = "roleplay-tab-btn p-2.5 rounded-2xl border-2 border-slate-200 bg-white hover:border-indigo-300 text-slate-700 font-black text-xs sm:text-sm shadow-xs transition active:scale-95 text-center";
+          }
+        }
+      }
+
+      // Update Dialogue Data with Karaoke Spans
+      const qData = ROLEPLAY_QUESTIONS[qNum];
+      renderRoleplaySpans('char1QuestionText', `"${qData.qEn}"`);
+      document.getElementById('char1QuestionAr').textContent = `"${qData.qAr}"`;
+      
+      renderRoleplaySpans('char2AnswerText', `"${qData.aEn}"`);
+      document.getElementById('char2AnswerAr').textContent = `"${qData.aAr}"`;
+      
+      document.getElementById('roleplayStatus').textContent = `السؤال الحالي: ${qNum} من 5`;
+
+      showToast("Role-Play Ready", `تم اختيار السؤال #${qNum}، اضغط على الشخصية للاستماع مع تظليل الكلمات 🎭`, "💬");
+    }
+
+    function speakRoleplaySpeaker(speakerNum, onFinish) {
+      sfx.playPop();
+      const qData = ROLEPLAY_QUESTIONS[currentRoleplayIndex];
+      const bubble = document.getElementById(`charBubble${speakerNum}`);
+      const textContainer = document.getElementById((speakerNum === 1) ? 'char1QuestionText' : 'char2AnswerText');
+      const avatar = document.getElementById(`char${speakerNum}AvatarWrapper`);
+      const card = document.getElementById(`charCard${speakerNum}`);
+
+      const spokenText = (speakerNum === 1) ? qData.qEn : qData.aEn;
+
+      karaokeEngine.speakWithKaraoke(textContainer || bubble, spokenText, {
+        onStart: () => {
+          if (bubble) bubble.classList.add('sync-active-glow');
+          if (avatar) avatar.classList.add('sync-char-active');
+          if (card) card.classList.add('ring-4', 'ring-indigo-300');
+        },
+        onEnd: () => {
+          if (bubble) bubble.classList.remove('sync-active-glow');
+          if (avatar) avatar.classList.remove('sync-char-active');
+          if (card) card.classList.remove('ring-4', 'ring-indigo-300');
+          if (onFinish) onFinish();
+        }
+      });
+    }
+
+    function playRoleplayConversationSequence() {
+      const btn = document.getElementById('playConversationBtn');
+      btn.disabled = true;
+      btn.classList.add('opacity-60');
+
+      showToast("Conversation Playing", "ليلى تطرح السؤال أولاً، ثم تجيب سارة تلقائياً 👧💬👱‍♀️", "▶️");
+
+      // Character 1 asks
+      speakRoleplaySpeaker(1, () => {
+        setTimeout(() => {
+          // Character 2 answers
+          speakRoleplaySpeaker(2, () => {
+            btn.disabled = false;
+            btn.classList.remove('opacity-60');
+            fireConfetti(0.3);
+            showToast("Role-Play Completed!", "أحسنت! تمت المحادثة بنجاح 🌟", "🎉");
+          });
+        }, 500);
+      });
+    }
+
+    function nextRoleplayQuestion() {
+      let nextIdx = currentRoleplayIndex + 1;
+      if (nextIdx > 5) nextIdx = 1;
+      selectRoleplayQuestion(nextIdx);
+    }
+
+    /* =========================================================================
+       GLOBAL SCORE & GENERAL UTILITIES
+       ========================================================================= */
+
+    function updateMasterScore() {
+      let score = 1; // 1 given for Ago example
+
+      // Activity 4 (7 slots)
+      for (let s = 2; s <= 8; s++) {
+        const u = currentStoryPlacements[s];
+        if (u && u.toLowerCase() === STORY_SLOT_SOLUTIONS[s].toLowerCase()) score++;
+      }
+
+      // Activity 5 (1 given example + 4 math inputs)
+      score += 1; // Math example 1
+      for (let m = 2; m <= 5; m++) {
+        const inp = document.getElementById(`math-input-${m}`);
+        if (inp && inp.value.trim().toLowerCase() === MATH_DATA[m].words.toLowerCase()) score++;
+      }
+
+      // Activity 6 Participation (5 questions)
+      score += 5;
+
+      document.getElementById('globalScoreCounter').textContent = `الدرجة: ${score} / 18`;
+    }
+
+    let arabicVisible = true;
+    function toggleArabicTranslations() {
+      arabicVisible = !arabicVisible;
+      const elements = document.querySelectorAll('.arabic-trans-box');
+      elements.forEach(el => {
+        el.style.display = arabicVisible ? 'block' : 'none';
+      });
+      document.getElementById('transBtnLabel').textContent = arabicVisible ? "الترجمة: مفعّلة" : "الترجمة: مخفية";
+      showToast("Arabic Subtitles", arabicVisible ? "تم إظهار الترجمة العربية 🌐" : "تم إخفاء الترجمة لتعزيز الاستماع المباشر 🇨🇦", "🌐");
+    }
+
+    function testCanadianVoice() {
+      sfx.playPop();
+      speechEngine.speak("Hello everyone! I am your Canadian teacher. Let's read the story and practice our numbers and dialogue together!");
+      showToast("Canadian Accent 🇨🇦", "تم تفعيل النطق الكندي الأنثوي عالي النقاء", "🎙️");
+    }
+
+    function resetAllActivities() {
+      sfx.playPop();
+      resetStorySlots();
+      for (let i = 2; i <= 5; i++) {
+        const inp = document.getElementById(`math-input-${i}`);
+        if (inp) {
+          inp.value = '';
+          inp.classList.remove('border-emerald-500', 'bg-emerald-50', 'border-rose-400', 'bg-rose-50');
+        }
+      }
+      document.getElementById('mathStatusText').textContent = "تم حل 0 من 4 مسائل";
+      selectRoleplayQuestion(1);
+      updateMasterScore();
+      showToast("إعادة تعيين شاملة", "تمت إعادة تعيين جميع التمارين بنجاح", "🔄");
+    }
+
+    function showToast(title, message, icon = "✨") {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastMsg').textContent = message;
+      document.getElementById('toastIcon').textContent = icon;
+
+      toast.classList.remove('translate-y-28', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-28', 'opacity-0');
+      }, 2500);
+    }
+
+    function fireConfetti(power = 0.5) {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: Math.floor(65 * power),
+          spread: 75,
+          origin: { y: 0.7 }
+        });
+      }
+    }
+
+    window.onload = function() {
+      speechEngine.init();
+      renderWordBank();
+      selectRoleplayQuestion(1);
+      updateMasterScore();
+      setTimeout(() => {
+        showToast("Welcome! Page 7", "اسحب الكلمات، تفاعل مع المسائل، وجرّب لعبة لعب الأدوار 🇨🇦", "🎉");
+      }, 500);
+    };
+  </script>
+</body>
+</html>
